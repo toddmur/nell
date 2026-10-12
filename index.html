@@ -1,2267 +1,1211 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Majors 2026 Draft - LOCAL TESTING</title>
-    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Work+Sans:wght@400;600;700&display=swap" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --bg-primary: #1a1a1a;
-            --bg-secondary: #2d2d2d;
-            --bg-card: #3a3a3a;
-            --accent-primary: #fbbf24;
-            --accent-green: #22c55e;
-            --accent-green-dark: #16a34a;
-            --accent-yellow: #fef08a;
-            --accent-red: #ef4444;
-            --text-primary: #ffffff;
-            --text-secondary: #d4d4d4;
-            --border: #525252;
-        }
-
-        body {
-            font-family: 'Work Sans', sans-serif;
-            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
-            color: var(--text-primary);
-            min-height: 100vh;
-            overflow-x: hidden;
-            padding-top: 3rem;
-        }
-
-        .testing-banner {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            background: linear-gradient(135deg, #f59e0b, #fbbf24);
-            color: #000;
-            text-align: center;
-            padding: 0.75rem;
-            font-weight: 700;
-            z-index: 9999;
-            font-size: 0.9rem;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-        }
-
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 2rem;
-        }
-
-        /* Login Screen */
-        .login-screen {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            padding: 2rem;
-        }
-
-        .login-card {
-            background: var(--bg-secondary);
-            border: 2px solid var(--border);
-            border-radius: 20px;
-            padding: 3rem;
-            max-width: 500px;
-            width: 100%;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-            animation: slideUp 0.6s ease-out;
-        }
-
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .login-card h1 {
-            font-family: 'Archivo Black', sans-serif;
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
-            background: linear-gradient(135deg, var(--accent-primary), var(--accent-green));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .login-card p {
-            color: var(--text-secondary);
-            margin-bottom: 2rem;
-            font-size: 1.1rem;
-        }
-
-        .input-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .input-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            font-size: 0.85rem;
-            letter-spacing: 0.5px;
-        }
-
-        .input-group input {
-            width: 100%;
-            padding: 1rem;
-            background: var(--bg-primary);
-            border: 2px solid var(--border);
-            border-radius: 10px;
-            color: var(--text-primary);
-            font-size: 1.1rem;
-            font-family: 'Work Sans', sans-serif;
-            transition: all 0.3s;
-        }
-
-        .input-group input:focus {
-            outline: none;
-            border-color: var(--accent-primary);
-            box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.1);
-        }
-
-        .btn {
-            width: 100%;
-            padding: 1rem;
-            background: linear-gradient(135deg, var(--accent-primary), var(--accent-green));
-            border: none;
-            border-radius: 10px;
-            color: #000000;
-            font-size: 1.1rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(251, 191, 36, 0.3);
-        }
-
-        .error-msg {
-            background: rgba(239, 68, 68, 0.1);
-            border: 1px solid var(--accent-red);
-            color: var(--accent-red);
-            padding: 1rem;
-            border-radius: 10px;
-            margin-bottom: 1rem;
-            display: none;
-        }
-
-        /* Header */
-        .header {
-            background: var(--bg-secondary);
-            border: 2px solid var(--border);
-            border-radius: 20px;
-            padding: 2rem;
-            margin-bottom: 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-        }
-
-        .header-left h1 {
-            font-family: 'Archivo Black', sans-serif;
-            font-size: 2rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .header-left .team-badge {
-            display: inline-block;
-            background: linear-gradient(135deg, var(--accent-primary), var(--accent-green));
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-weight: 700;
-            font-size: 0.9rem;
-            color: #000000;
-        }
-
-        .header-right {
-            text-align: right;
-        }
-
-        .pick-indicator {
-            font-size: 3rem;
-            font-family: 'Archivo Black', sans-serif;
-            line-height: 1;
-            margin-bottom: 0.5rem;
-        }
-
-        .pick-label {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        /* Main Grid */
-        .main-grid {
-            display: grid;
-            grid-template-columns: 1.5fr 1.2fr 1fr;
-            gap: 2rem;
-            margin-bottom: 2rem;
-        }
-
-        /* Draft Board */
-        .draft-board {
-            background: var(--bg-secondary);
-            border: 2px solid var(--border);
-            border-radius: 20px;
-            padding: 2rem;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-        }
-
-        .board-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-        }
-
-        .board-header h2 {
-            font-family: 'Archivo Black', sans-serif;
-            font-size: 1.5rem;
-        }
-
-        .round-selector {
-            display: flex;
-            gap: 0.5rem;
-            background: var(--bg-primary);
-            padding: 0.5rem;
-            border-radius: 10px;
-        }
-
-        .round-btn {
-            padding: 0.5rem 1rem;
-            background: transparent;
-            border: none;
-            color: var(--text-secondary);
-            font-weight: 600;
-            cursor: pointer;
-            border-radius: 5px;
-            transition: all 0.3s;
-        }
-
-        .round-btn.active {
-            background: var(--accent-primary);
-            color: #000000;
-        }
-
-        .picks-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 1rem;
-            max-height: 600px;
-            overflow-y: auto;
-            padding-right: 0.5rem;
-        }
-
-        .picks-grid::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        .picks-grid::-webkit-scrollbar-track {
-            background: var(--bg-primary);
-            border-radius: 10px;
-        }
-
-        .picks-grid::-webkit-scrollbar-thumb {
-            background: var(--accent-primary);
-            border-radius: 10px;
-        }
-
-        .pick-card {
-            background: var(--bg-card);
-            border: 2px solid var(--border);
-            border-radius: 12px;
-            padding: 1.25rem;
-            min-height: 120px;
-            display: flex;
-            flex-direction: column;
-            transition: all 0.3s;
-            cursor: pointer;
-            animation: fadeIn 0.4s ease-out;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: scale(0.95);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
-
-        .pick-card:hover {
-            transform: translateY(-3px);
-            border-color: var(--accent-primary);
-            box-shadow: 0 5px 20px rgba(251, 191, 36, 0.2);
-        }
-
-        .pick-card.my-pick {
-            border-color: var(--accent-green);
-            background: linear-gradient(135deg, var(--bg-card), rgba(34, 197, 94, 0.1));
-        }
-
-        .pick-number {
-            display: block;
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-            font-weight: 700;
-            margin-bottom: 0.75rem;
-            line-height: 1.2;
-        }
-
-        .pick-team {
-            display: block;
-            font-weight: 700;
-            color: var(--accent-primary);
-            font-size: 1rem;
-            margin-bottom: 0.75rem;
-            line-height: 1.3;
-        }
-
-        .pick-card.my-pick .pick-team {
-            color: var(--accent-green);
-        }
-
-        .pick-player {
-            font-size: 1.1rem;
-            font-weight: 700;
-            margin-bottom: 0.25rem;
-            word-break: break-word;
-        }
-
-        .pick-position {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-        }
-
-        .pick-empty {
-            background: var(--bg-primary);
-            border: 2px dashed var(--border);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-        }
-
-        /* Control Panel */
-        .control-panel {
-            background: var(--bg-secondary);
-            border: 2px solid var(--border);
-            border-radius: 20px;
-            padding: 2rem;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-        }
-
-        .control-panel h2 {
-            font-family: 'Archivo Black', sans-serif;
-            font-size: 1.5rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-            color: var(--text-secondary);
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .form-group input,
-        .form-group select {
-            width: 100%;
-            padding: 0.75rem;
-            background: var(--bg-primary);
-            border: 2px solid var(--border);
-            border-radius: 10px;
-            color: var(--text-primary);
-            font-size: 1rem;
-            font-family: 'Work Sans', sans-serif;
-            transition: all 0.3s;
-        }
-
-        .form-group input:focus,
-        .form-group select:focus {
-            outline: none;
-            border-color: var(--accent-primary);
-        }
-
-        .btn-submit {
-            width: 100%;
-            padding: 1rem;
-            background: linear-gradient(135deg, var(--accent-green), var(--accent-green-dark));
-            border: none;
-            border-radius: 10px;
-            color: white;
-            font-size: 1rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .btn-submit:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(34, 197, 94, 0.3);
-        }
-
-        .btn-submit:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .on-clock {
-            background: rgba(251, 191, 36, 0.1);
-            border: 2px solid var(--accent-primary);
-            padding: 1rem;
-            border-radius: 10px;
-            margin-bottom: 1.5rem;
-        }
-
-        .on-clock-title {
-            font-weight: 700;
-            color: var(--accent-primary);
-            margin-bottom: 0.5rem;
-            text-transform: uppercase;
-            font-size: 0.85rem;
-            letter-spacing: 1px;
-        }
-
-        .on-clock-team {
-            font-size: 1.3rem;
-            font-weight: 700;
-        }
-
-        .pick-timer {
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--accent-green);
-            margin-top: 1rem;
-            text-align: center;
-            font-family: 'Courier New', monospace;
-        }
-
-        .pick-timer.warning {
-            color: #f59e0b;
-        }
-
-        .pick-timer.danger {
-            color: var(--accent-red);
-            animation: pulse 1s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% {
-                opacity: 1;
-            }
-            50% {
-                opacity: 0.6;
-            }
-        }
-
-        /* Best Available Panel */
-        .best-available {
-            background: var(--bg-secondary);
-            border: 2px solid var(--border);
-            border-radius: 20px;
-            padding: 2rem;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-        }
-
-        .best-available h2 {
-            font-family: 'Archivo Black', sans-serif;
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .position-filter {
-            display: flex;
-            gap: 0.5rem;
-            margin-bottom: 1.5rem;
-            flex-wrap: wrap;
-        }
-
-        .filter-btn {
-            padding: 0.4rem 0.8rem;
-            background: var(--bg-primary);
-            border: 2px solid var(--border);
-            color: var(--text-secondary);
-            font-weight: 600;
-            cursor: pointer;
-            border-radius: 8px;
-            transition: all 0.3s;
-            font-size: 0.85rem;
-        }
-
-        .filter-btn.active {
-            background: var(--accent-primary);
-            border-color: var(--accent-primary);
-            color: #000000;
-        }
-
-        .filter-btn:hover {
-            border-color: var(--accent-primary);
-        }
-
-        .search-box {
-            width: 100%;
-            padding: 0.75rem;
-            background: var(--bg-primary);
-            border: 2px solid var(--border);
-            border-radius: 10px;
-            color: var(--text-primary);
-            font-size: 0.95rem;
-            margin-bottom: 1rem;
-            font-family: 'Work Sans', sans-serif;
-        }
-
-        .search-box:focus {
-            outline: none;
-            border-color: var(--accent-primary);
-        }
-
-        .players-list {
-            max-height: 600px;
-            overflow-y: auto;
-            padding-right: 0.5rem;
-        }
-
-        .players-list::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        .players-list::-webkit-scrollbar-track {
-            background: var(--bg-primary);
-            border-radius: 10px;
-        }
-
-        .players-list::-webkit-scrollbar-thumb {
-            background: var(--accent-primary);
-            border-radius: 10px;
-        }
-
-        .player-item {
-            background: var(--bg-primary);
-            border: 2px solid var(--border);
-            border-radius: 10px;
-            padding: 1rem;
-            margin-bottom: 0.75rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .player-item:hover {
-            border-color: var(--accent-primary);
-            transform: translateX(5px);
-        }
-
-        .player-item.drafted {
-            opacity: 0.4;
-            cursor: default;
-            background: var(--bg-card);
-        }
-
-        .player-item.drafted:hover {
-            transform: none;
-            border-color: var(--border);
-        }
-
-        .player-info {
-            flex: 1;
-        }
-
-        .player-rank {
-            display: inline-block;
-            background: var(--accent-primary);
-            color: #000000;
-            font-weight: 700;
-            padding: 0.25rem 0.5rem;
-            border-radius: 5px;
-            font-size: 0.75rem;
-            margin-right: 0.75rem;
-        }
-
-        .player-item.drafted .player-rank {
-            background: var(--text-secondary);
-        }
-
-        .player-name {
-            font-weight: 700;
-            font-size: 1.05rem;
-            margin-bottom: 0.25rem;
-        }
-
-        .player-details {
-            display: flex;
-            gap: 1rem;
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-        }
-
-        .player-position-badge {
-            background: var(--bg-secondary);
-            padding: 0.25rem 0.5rem;
-            border-radius: 5px;
-            font-weight: 600;
-        }
-
-        .drafted-by {
-            font-size: 0.85rem;
-            color: var(--accent-red);
-            font-weight: 600;
-        }
-
-        .upload-section {
-            background: rgba(251, 191, 36, 0.05);
-            border: 2px dashed var(--accent-primary);
-            border-radius: 10px;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-            text-align: center;
-        }
-
-        .upload-section h3 {
-            font-size: 1rem;
-            margin-bottom: 1rem;
-            color: var(--accent-primary);
-        }
-
-        .file-input-wrapper {
-            position: relative;
-            overflow: hidden;
-            display: inline-block;
-        }
-
-        .btn-upload {
-            background: var(--accent-primary);
-            color: #000000;
-            padding: 0.75rem 1.5rem;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            display: inline-block;
-        }
-
-        .file-input-wrapper input[type=file] {
-            position: absolute;
-            left: -9999px;
-        }
-
-        .upload-instructions {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            margin-top: 0.75rem;
-        }
-
-        /* Draft Order Modal */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.8);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            padding: 2rem;
-        }
-
-        .modal {
-            background: var(--bg-secondary);
-            border: 2px solid var(--border);
-            border-radius: 20px;
-            padding: 2rem;
-            max-width: 600px;
-            width: 100%;
-            max-height: 80vh;
-            overflow-y: auto;
-        }
-
-        .modal h2 {
-            font-family: 'Archivo Black', sans-serif;
-            font-size: 1.8rem;
-            margin-bottom: 1rem;
-            color: var(--accent-primary);
-        }
-
-        .modal-description {
-            color: var(--text-secondary);
-            margin-bottom: 2rem;
-        }
-
-        .draft-order-list {
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-            margin-bottom: 2rem;
-        }
-
-        .order-item {
-            background: var(--bg-primary);
-            border: 2px solid var(--border);
-            border-radius: 10px;
-            padding: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .order-number {
-            background: var(--accent-primary);
-            color: #000000;
-            font-weight: 700;
-            padding: 0.5rem;
-            border-radius: 8px;
-            min-width: 40px;
-            text-align: center;
-            font-size: 1.1rem;
-        }
-
-        .order-item select {
-            flex: 1;
-            padding: 0.75rem;
-            background: var(--bg-card);
-            border: 2px solid var(--border);
-            border-radius: 8px;
-            color: var(--text-primary);
-            font-size: 1rem;
-            font-family: 'Work Sans', sans-serif;
-        }
-
-        .order-controls {
-            display: flex;
-            gap: 0.5rem;
-        }
-
-        .btn-move {
-            background: var(--bg-card);
-            border: 2px solid var(--border);
-            color: var(--text-primary);
-            padding: 0.5rem;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 1.2rem;
-            line-height: 1;
-            width: 35px;
-            height: 35px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .btn-move:hover {
-            border-color: var(--accent-primary);
-            background: var(--bg-secondary);
-        }
-
-        .btn-move:disabled {
-            opacity: 0.3;
-            cursor: not-allowed;
-        }
-
-        .modal-actions {
-            display: flex;
-            gap: 1rem;
-        }
-
-        .btn-modal {
-            flex: 1;
-            padding: 1rem;
-            border: none;
-            border-radius: 10px;
-            font-weight: 700;
-            cursor: pointer;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .btn-modal-primary {
-            background: linear-gradient(135deg, var(--accent-green), var(--accent-green-dark));
-            color: white;
-        }
-
-        .btn-modal-secondary {
-            background: var(--bg-card);
-            border: 2px solid var(--border);
-            color: var(--text-primary);
-        }
-
-        .mlb-team-badge {
-            display: inline-block;
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            padding: 0.25rem 0.5rem;
-            border-radius: 5px;
-            font-size: 0.75rem;
-            color: var(--accent-primary);
-            margin-top: 0.25rem;
-        }
-
-        .pre-draft-list,
-        .team-assignments-list {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            margin-bottom: 2rem;
-            max-height: 400px;
-            overflow-y: auto;
-        }
-
-        .pre-draft-item,
-        .team-assignment-item {
-            background: var(--bg-primary);
-            border: 2px solid var(--border);
-            border-radius: 10px;
-            padding: 1rem;
-        }
-
-        .pre-draft-item h4,
-        .team-assignment-item h4 {
-            color: var(--accent-primary);
-            margin-bottom: 0.75rem;
-            font-size: 1.1rem;
-        }
-
-        .pre-draft-item input {
-            width: 100%;
-            padding: 0.5rem;
-            background: var(--bg-card);
-            border: 2px solid var(--border);
-            border-radius: 5px;
-            color: var(--text-primary);
-            font-size: 0.95rem;
-        }
-
-        .pre-draft-item input:focus {
-            outline: none;
-            border-color: var(--accent-primary);
-        }
-
-        .team-assignment-item select {
-            width: 100%;
-            padding: 0.75rem;
-            background: var(--bg-card);
-            border: 2px solid var(--border);
-            border-radius: 8px;
-            color: var(--text-primary);
-            font-size: 1rem;
-        }
-
-        .help-text {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            margin-top: 0.5rem;
-        }
-
-        .draft-grid-container {
-            overflow: auto;
-            max-height: 60vh;
-            margin-bottom: 2rem;
-        }
-
-        .draft-grid {
-            display: table;
-            border-collapse: collapse;
-            width: 100%;
-            min-width: 1200px;
-        }
-
-        .grid-header-row {
-            display: table-row;
-            background: var(--bg-card);
-            position: sticky;
-            top: 0;
-            z-index: 10;
-        }
-
-        .grid-header-cell {
-            display: table-cell;
-            padding: 0.75rem;
-            font-weight: 700;
-            text-align: center;
-            border: 1px solid var(--border);
-            background: var(--bg-card);
-            color: var(--accent-primary);
-            font-size: 0.9rem;
-        }
-
-        .grid-row {
-            display: table-row;
-        }
-
-        .grid-row:hover {
-            background: rgba(251, 191, 36, 0.05);
-        }
-
-        .grid-cell {
-            display: table-cell;
-            padding: 0.5rem;
-            border: 1px solid var(--border);
-            min-width: 100px;
-            vertical-align: top;
-        }
-
-        .grid-cell.round-label {
-            background: var(--bg-card);
-            font-weight: 700;
-            text-align: center;
-            color: var(--accent-primary);
-            position: sticky;
-            left: 0;
-            z-index: 5;
-        }
-
-        .grid-cell-content {
-            min-height: 50px;
-        }
-
-        .grid-pick-info {
-            font-size: 0.75rem;
-            color: var(--text-secondary);
-            margin-bottom: 0.25rem;
-        }
-
-        .grid-player-input {
-            width: 100%;
-            background: var(--bg-primary);
-            border: 1px solid var(--border);
-            color: var(--text-primary);
-            padding: 0.4rem;
-            border-radius: 4px;
-            font-size: 0.85rem;
-        }
-
-        .grid-player-input:focus {
-            outline: none;
-            border-color: var(--accent-primary);
-            background: var(--bg-card);
-        }
-
-        .grid-player-input.has-value {
-            background: rgba(34, 197, 94, 0.1);
-            border-color: var(--accent-green);
-        }
-
-        .grid-player-input.pre-assigned {
-            background: rgba(251, 191, 36, 0.15);
-            border-color: var(--accent-primary);
-            font-weight: 600;
-        }
-
-        .grid-player-display {
-            background: rgba(34, 197, 94, 0.1);
-            border: 1px solid var(--accent-green);
-            padding: 0.4rem;
-            border-radius: 4px;
-            font-size: 0.85rem;
-            font-weight: 600;
-        }
-
-        .grid-legend {
-            display: flex;
-            gap: 1.5rem;
-            margin-bottom: 1rem;
-            font-size: 0.85rem;
-            padding: 0.75rem;
-            background: var(--bg-primary);
-            border-radius: 8px;
-        }
-
-        .legend-item {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .legend-box {
-            width: 20px;
-            height: 20px;
-            border-radius: 4px;
-            border: 1px solid var(--border);
-        }
-
-        .legend-box.pre-assigned {
-            background: rgba(251, 191, 36, 0.15);
-            border-color: var(--accent-primary);
-        }
-
-        .legend-box.drafted {
-            background: rgba(34, 197, 94, 0.1);
-            border-color: var(--accent-green);
-        }
-
-        /* Team Rosters */
-        .team-rosters {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .roster-card {
-            background: var(--bg-secondary);
-            border: 2px solid var(--border);
-            border-radius: 15px;
-            padding: 1.5rem;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
-        }
-
-        .roster-card.my-team {
-            border-color: var(--accent-green);
-            background: linear-gradient(135deg, var(--bg-secondary), rgba(34, 197, 94, 0.05));
-        }
-
-        .roster-header {
-            margin-bottom: 1rem;
-            padding-bottom: 1rem;
-            border-bottom: 2px solid var(--border);
-        }
-
-        .roster-team-name {
-            font-weight: 700;
-            font-size: 1.2rem;
-            margin-bottom: 0.25rem;
-        }
-
-        .roster-count {
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-        }
-
-        .roster-players {
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-        }
-
-        .roster-player {
-            background: var(--bg-primary);
-            padding: 0.75rem;
-            border-radius: 8px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .roster-player-name {
-            font-weight: 600;
-        }
-
-        .roster-player-position {
-            color: var(--text-secondary);
-            font-size: 0.85rem;
-        }
-
-        .admin-controls {
-            margin-top: 2rem;
-            padding-top: 2rem;
-            border-top: 2px solid var(--border);
-        }
-
-        .admin-controls h3 {
-            font-size: 1.1rem;
-            margin-bottom: 1rem;
-            color: var(--accent-red);
-        }
-
-        .btn-admin {
-            width: 100%;
-            padding: 0.75rem;
-            background: var(--accent-red);
-            border: none;
-            border-radius: 10px;
-            color: white;
-            font-weight: 600;
-            cursor: pointer;
-            margin-bottom: 0.5rem;
-        }
-
-        .btn-admin:hover {
-            opacity: 0.9;
-        }
-
-        .hidden {
-            display: none !important;
-        }
-
-        @media (max-width: 1024px) {
-            .main-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .best-available {
-                order: -1;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .header {
-                flex-direction: column;
-                text-align: center;
-                gap: 1rem;
-            }
-
-            .header-right {
-                text-align: center;
-            }
-
-            .picks-grid {
-                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Newtown Square &amp; Newtown-Edgmont Little League — 1952&ndash;1967 Archive</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Special+Elite&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F1E8D6;
+    --paper-dim:#E7DBC0;
+    --ink:#221E19;
+    --ink-soft:#4A4137;
+    --green:#22402C;
+    --green-deep:#162A1D;
+    --brick:#9C3B2C;
+    --brass:#A9812E;
+    --line:#C7B98F;
+    --line-soft:#D9CDA9;
+    --maxw:920px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Lora', Georgia, serif;
+    line-height:1.6;
+    font-size:17px;
+  }
+  h1,h2,h3,h4{
+    font-family:'Old Standard TT', 'Times New Roman', serif;
+    font-weight:700;
+    color:var(--green-deep);
+    margin:0 0 .3em 0;
+    line-height:1.15;
+  }
+  .label{
+    font-family:'Special Elite', monospace;
+    letter-spacing:.02em;
+    color:var(--brick);
+    font-size:.78rem;
+  }
+  a{color:var(--brick);}
+  img{max-width:100%;display:block;border:1px solid var(--ink);}
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 22px;}
+  .wide{max-width:1080px; margin:0 auto; padding:0 22px;}
+
+  /* ---- Masthead ---- */
+  header.masthead{
+    background:var(--paper);
+    border-bottom:4px double var(--ink);
+    padding:38px 22px 22px;
+    text-align:center;
+  }
+  header.masthead .kicker{
+    font-family:'Special Elite', monospace;
+    font-size:.82rem;
+    letter-spacing:.08em;
+    color:var(--green-deep);
+    margin-bottom:10px;
+  }
+  header.masthead h1{
+    font-size:clamp(2.1rem, 6vw, 3.6rem);
+    letter-spacing:.01em;
+    text-transform:uppercase;
+    border-top:2px solid var(--ink);
+    border-bottom:2px solid var(--ink);
+    padding:12px 0;
+    margin-bottom:10px;
+  }
+  header.masthead .dateline{
+    display:flex;
+    justify-content:space-between;
+    font-family:'Special Elite', monospace;
+    font-size:.78rem;
+    color:var(--ink-soft);
+    max-width:640px;
+    margin:0 auto 6px;
+  }
+  header.masthead .sub{
+    font-style:italic;
+    color:var(--ink-soft);
+    font-size:1.05rem;
+  }
+
+  /* ---- Nav ---- */
+  nav.tabs{
+    position:sticky; top:0; z-index:20;
+    background:var(--green-deep);
+    border-bottom:3px solid var(--brass);
+  }
+  nav.tabs ul{
+    max-width:1080px; margin:0 auto; padding:0 22px;
+    list-style:none; display:flex; flex-wrap:wrap; gap:2px 0;
+  }
+  nav.tabs a{
+    display:block;
+    color:var(--paper);
+    text-decoration:none;
+    font-family:'Special Elite', monospace;
+    font-size:.76rem;
+    letter-spacing:.03em;
+    padding:12px 14px;
+    border-right:1px solid rgba(241,232,214,.15);
+  }
+  nav.tabs a:hover{background:var(--green);}
+
+  /* ---- Section shells ---- */
+  section{padding:56px 0;}
+  section.tint{background:var(--paper-dim);}
+  .section-head{
+    text-align:center;
+    margin-bottom:36px;
+  }
+  .section-head .label{display:block; margin-bottom:6px;}
+  .section-head h2{font-size:clamp(1.6rem,4vw,2.3rem);}
+  .rule{
+    width:70px; height:3px; background:var(--brick);
+    margin:14px auto 0;
+  }
+  .intro-copy{max-width:680px; margin:0 auto 40px; text-align:center; color:var(--ink-soft);}
+
+  /* ---- Standings table ---- */
+  table.standings{
+    width:100%; border-collapse:collapse; margin:0 auto 8px;
+    font-family:'Lora', serif; font-size:.95rem;
+    background:var(--paper);
+  }
+  table.standings caption{
+    font-family:'Special Elite', monospace; font-size:.75rem;
+    text-align:left; color:var(--ink-soft); margin-bottom:6px;
+  }
+  table.standings th, table.standings td{
+    border:1px solid var(--line); padding:7px 12px; text-align:left;
+  }
+  table.standings th{background:var(--green-deep); color:var(--paper); font-weight:600;}
+  table.standings td.num{text-align:center;}
+
+  /* ---- Team cards ---- */
+  .team-grid{
+    display:grid; grid-template-columns:1fr 1fr; gap:28px;
+    max-width:1080px; margin:0 auto;
+  }
+  @media (max-width:760px){ .team-grid{grid-template-columns:1fr;} }
+  .team-card{
+    background:var(--paper);
+    border:1px solid var(--ink);
+    box-shadow:5px 5px 0 var(--line);
+  }
+  .team-card figure{margin:0;}
+  .team-card figure img{border:none; border-bottom:1px solid var(--ink); width:100%; height:230px; object-fit:cover; object-position:top;}
+  .team-card .body{padding:18px 20px 22px;}
+  .team-card h3{font-size:1.5rem; color:var(--brick); margin-bottom:2px;}
+  .team-card .sponsor{font-size:.85rem; color:var(--ink-soft); font-style:italic; margin-bottom:12px;}
+  .team-card .manager{font-family:'Special Elite',monospace; font-size:.75rem; color:var(--green-deep); margin-bottom:10px;}
+  .roster{
+    columns:2; column-gap:18px;
+    font-size:.88rem; padding:0; margin:0; list-style:none;
+  }
+  .roster li{break-inside:avoid; padding:2px 0; border-bottom:1px dotted var(--line-soft);}
+  .team-card .view-link{display:inline-block; margin-top:14px; font-family:'Special Elite',monospace; font-size:.72rem;}
+
+  /* ---- Article / clipping cards ---- */
+  .clip{
+    display:grid; grid-template-columns:230px 1fr; gap:24px;
+    padding:26px 0; border-bottom:1px solid var(--line);
+    max-width:1080px; margin:0 auto;
+  }
+  .clip:last-child{border-bottom:none;}
+  @media (max-width:640px){ .clip{grid-template-columns:1fr;} }
+  .clip img{cursor:zoom-in;}
+  .clip .meta{font-family:'Special Elite',monospace; font-size:.72rem; color:var(--brick); margin-bottom:6px;}
+  .clip h4{font-size:1.25rem; margin-bottom:8px;}
+  .clip p{margin:0 0 8px; color:var(--ink-soft); font-size:.96rem;}
+  .clip .thumb-cap{font-size:.72rem; color:var(--ink-soft); text-align:center; margin-top:4px; font-style:italic;}
+
+  /* ---- box score ---- */
+  .boxscore-wrap{overflow-x:auto; margin:14px 0;}
+  table.box{border-collapse:collapse; font-size:.82rem; min-width:340px;}
+  table.box th, table.box td{border:1px solid var(--line); padding:4px 9px;}
+  table.box th{background:var(--paper-dim); font-family:'Special Elite',monospace; font-weight:400; font-size:.7rem;}
+  table.box td.n{text-align:center;}
+  details.box-details{margin-top:10px;}
+  details.box-details summary{cursor:pointer; font-family:'Special Elite',monospace; font-size:.72rem; color:var(--green-deep);}
+
+  /* ---- Milestone banner (field dedication) ---- */
+  .milestone{
+    max-width:760px; margin:0 auto 40px; text-align:center;
+    border-top:1px solid var(--brass); border-bottom:1px solid var(--brass);
+    padding:22px 10px;
+  }
+  .milestone img{max-height:220px; margin:0 auto 14px; object-fit:contain;}
+
+  /* ---- Player index ---- */
+  .index-tools{max-width:520px; margin:0 auto 26px; text-align:center;}
+  .index-tools input{
+    width:100%; padding:11px 14px; font-family:'Lora',serif; font-size:1rem;
+    border:1px solid var(--ink); background:var(--paper);
+  }
+  .index-tools .count{font-family:'Special Elite',monospace; font-size:.72rem; color:var(--ink-soft); margin-top:8px;}
+  table.pindex{width:100%; max-width:820px; margin:0 auto; border-collapse:collapse; font-size:.92rem;}
+  table.pindex th, table.pindex td{padding:8px 12px; border-bottom:1px solid var(--line-soft); text-align:left;}
+  table.pindex th{font-family:'Special Elite',monospace; font-size:.72rem; color:var(--ink-soft); font-weight:400; border-bottom:2px solid var(--ink);}
+  table.pindex tr.hidden{display:none;}
+
+  /* ---- footer ---- */
+  footer{
+    background:var(--green-deep); color:var(--paper-dim);
+    padding:44px 22px 30px; text-align:center;
+  }
+  footer h3{color:var(--paper);}
+  footer p{max-width:560px; margin:0 auto; color:#C9C2AE; font-size:.92rem;}
+  footer .credits{margin-top:22px; font-family:'Special Elite',monospace; font-size:.7rem; color:#8FA091;}
+
+  /* ---- lightbox ---- */
+  dialog.lightbox{border:none; padding:0; background:transparent; max-width:94vw; max-height:94vh;}
+  dialog.lightbox::backdrop{background:rgba(10,12,9,.88);}
+  dialog.lightbox img{max-width:92vw; max-height:88vh; width:auto; border:3px solid var(--paper);}
+  dialog.lightbox button{
+    position:fixed; top:18px; right:24px; z-index:5;
+    font-family:'Special Elite',monospace; background:var(--paper); border:1px solid var(--ink);
+    padding:6px 12px; cursor:pointer;
+  }
+</style>
 </head>
 <body>
-    <!-- Login Screen -->
-    <div id="loginScreen" class="login-screen">
-        <div class="login-card">
-            <h1>Majors 2026 Draft</h1>
-            <p>Enter your team access code to join the draft</p>
-            <div class="error-msg" id="errorMsg">Invalid access code. Please try again.</div>
-            <div class="input-group">
-                <label for="accessCode">Access Code</label>
-                <input type="text" id="accessCode" placeholder="Enter your code" autocomplete="off">
-            </div>
-            <button class="btn" onclick="login()">Enter Draft Room</button>
+
+<header class="masthead">
+  <div class="kicker">Est. 1952 &middot; Newtown &amp; Edgmont Townships, Pennsylvania</div>
+  <h1>The Newtown&#8209;Edgmont Little League</h1>
+  <div class="dateline">
+    <span>Cubs &middot; Giants &middot; Yanks &middot; Cards</span>
+    <span>An Archive, 1952&ndash;1967</span>
+  </div>
+  <p class="sub">Box scores, standings, and clippings, preserved from the scrapbook.</p>
+</header>
+
+<nav class="tabs">
+  <ul>
+    <li><a href="#s1952">1952 Season</a></li>
+    <li><a href="#teams1952">1952 Teams</a></li>
+    <li><a href="#playoffs1952">1952 Playoffs</a></li>
+    <li><a href="#s1953">1953 &amp; the New Field</a></li>
+    <li><a href="#teams1953">1953 Season Play</a></li>
+    <li><a href="#playoffs1953">1953 Playoffs</a></li>
+    <li><a href="#s1954">1954 Season</a></li>
+    <li><a href="#s1955">1955 Season</a></li>
+    <li><a href="#s1956">1956 Season</a></li>
+    <li><a href="#index">Player Index</a></li>
+  </ul>
+</nav>
+
+<!-- ================= 1952 SEASON ================= -->
+<section id="s1952">
+  <div class="wide">
+    <div class="section-head">
+      <span class="label">Season One</span>
+      <h2>1952 — Newtown Square Little League</h2>
+      <div class="rule"></div>
+    </div>
+    <p class="intro-copy">In the spring of 1952, the newly organized Little League of Newtown and Edgemont Townships opened its first season with a round-robin exhibition at the Alice Grimm Grade School Field. Four teams took the field that summer &mdash; the Cards, the Cubs, the Yanks, and the Giants &mdash; playing Monday through Thursday evenings at 6:30, with no admission charge.</p>
+  </div>
+
+  <div class="wide">
+    <table class="standings">
+      <caption>League standings, end of first week of play &mdash; June 1952</caption>
+      <thead><tr><th>Team</th><th class="num">Won</th><th class="num">Lost</th></tr></thead>
+      <tbody>
+        <tr><td>Yankees (Kirk Chevrolet&ndash;Mackey's Drug Store)</td><td class="num">3</td><td class="num">0</td></tr>
+        <tr><td>Giants (Ewing, Powell &amp; Niemeyer)</td><td class="num">2</td><td class="num">1</td></tr>
+        <tr><td>Cubs (VFW Post 4952)</td><td class="num">0</td><td class="num">3</td></tr>
+        <tr><td>Cards (Rotary Club of West Chester Pike)</td><td class="num">0</td><td class="num">3</td></tr>
+      </tbody>
+    </table>
+    <p class="intro-copy" style="margin-top:26px;">Coach Frank Hargy's "strong, well-balanced" Yankees opened the season 3&ndash;0, capped by a 15&ndash;8 win over the second-place Giants on June 9. Early results: June 2, Yankees 14, Cubs 6; June 3, Giants 13, Cards 10; June 4, Yankees 22, Cubs 1; June 5, Giants 20, Cards 2; June 9, Yankees 15, Giants 8.</p>
+
+    <table class="standings" style="margin-top:30px;">
+      <caption>Second-half standings, as of July 14, 1952 &mdash; first half finished Yanks, Giants, Cards, Cubs</caption>
+      <thead><tr><th>Team</th><th class="num">Won</th><th class="num">Lost</th><th class="num">Pct.</th></tr></thead>
+      <tbody>
+        <tr><td>Yanks</td><td class="num">4</td><td class="num">0</td><td class="num">1.000</td></tr>
+        <tr><td>Cubs</td><td class="num">2</td><td class="num">1</td><td class="num">.666</td></tr>
+        <tr><td>Cards</td><td class="num">0</td><td class="num">3</td><td class="num">.000</td></tr>
+        <tr><td>Giants</td><td class="num">0</td><td class="num">2</td><td class="num">.000</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ================= 1952 TEAMS ================= -->
+<section id="teams1952" class="tint">
+  <div class="wide">
+    <div class="section-head">
+      <span class="label">Rosters</span>
+      <h2>The Four Clubs of 1952</h2>
+      <div class="rule"></div>
+    </div>
+    <div class="team-grid">
+
+      <div class="team-card">
+        <figure><img src="images/1952_cubs_team.jpg" alt="The Cubs of Newtown Square's Little League, 1952 team photo" onclick="openLB(this.src)"></figure>
+        <div class="body">
+          <h3>The Cubs</h3>
+          <div class="sponsor">Sponsored by VFW Post 4952</div>
+          <div class="manager">Manager: Franny Landrum</div>
+          <ul class="roster">
+            <li>Dew Waltz</li><li>Don Tarr</li><li>Dick Spring</li><li>Ron Basener</li>
+            <li>Bob Basener</li><li>Glen Poinsett</li><li>Jim Glodfelty</li><li>Bill Frankland</li>
+            <li>Rick Harrison</li><li>Joe Klingler</li><li>Garry Lewis</li><li>Dale Tarr</li>
+            <li>Ed Bailey, Jr.</li><li>Tom Dry</li><li>Tom Harper</li>
+          </ul>
+          <a class="view-link" href="images/1952_cubs_team.jpg" target="_blank">View original clipping &rarr;</a>
         </div>
+      </div>
+
+      <div class="team-card">
+        <figure><img src="images/1952_giants_team.jpg" alt="The Giants of Newtown Square's Little League, 1952 team photo" onclick="openLB(this.src)"></figure>
+        <div class="body">
+          <h3>The Giants</h3>
+          <div class="sponsor">Sponsored by E. W. Powell Co., Bud Ewing &amp; Irvin Niemeyer</div>
+          <div class="manager">Manager: Vincent Kerns</div>
+          <ul class="roster">
+            <li>Michael Kerns</li><li>Frank Cropper</li><li>Jimmy Fee</li><li>John Kerns</li>
+            <li>Bill Brown</li><li>George Matters</li><li>Jimmy McVeigh</li><li>Arthur Pease</li>
+            <li>Jimmy Callaghan</li><li>Jim Reardon</li><li>Eddie Woodward</li><li>Jerry McVeigh</li>
+            <li>John Smith</li>
+          </ul>
+          <a class="view-link" href="images/1952_giants_team.jpg" target="_blank">View original clipping &rarr;</a>
+        </div>
+      </div>
+
+      <div class="team-card">
+        <figure><img src="images/1952_yanks_team.jpg" alt="Newtown Square's Little League Yanks, 1952 team photo" onclick="openLB(this.src)"></figure>
+        <div class="body">
+          <h3>The Yanks</h3>
+          <div class="sponsor">Kirk Chevrolet&ndash;Mackey's Drug Store entry</div>
+          <div class="manager">Manager: Frank Hargy</div>
+          <ul class="roster">
+            <li>John Melhuish</li><li>Bill Frazier</li><li>Jimmy Jackson</li><li>Barry Kegal</li>
+            <li>Art Toensmeier</li><li>Frank Kegal</li><li>Owen Simmons</li><li>Jack Kegal</li>
+            <li>Tony Robinson</li><li>Dave Toensmeier</li><li>Bobby Ziegler</li><li>Dave Duncan</li>
+            <li>Gene Conard</li>
+          </ul>
+          <a class="view-link" href="images/1952_yanks_team.jpg" target="_blank">View original clipping &rarr;</a>
+        </div>
+      </div>
+
+      <div class="team-card">
+        <figure><img src="images/1952_cards_team.jpg" alt="Little Leaguers - The Cards, 1952 team photo" onclick="openLB(this.src)"></figure>
+        <div class="body">
+          <h3>The Cards</h3>
+          <div class="sponsor">Sponsored by the Rotary Club of West Chester Pike</div>
+          <div class="manager">Manager: Earle S. Robinson</div>
+          <ul class="roster">
+            <li>John Miller</li><li>Butch Payne</li><li>Skipper Kromholz</li><li>Earl Robinson</li>
+            <li>Jim Rigby</li><li>Joe Dulaney</li><li>Steve Collins</li><li>Dick Shornwald</li>
+            <li>Franny Roche</li><li>Dave Gilbert</li><li>Jack Kirk</li><li>Jim Gordon</li>
+            <li>Larry Wyatt</li><li>Harry Statzell</li>
+          </ul>
+          <a class="view-link" href="images/1952_cards_team.jpg" target="_blank">View original clipping &rarr;</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ================= 1952 STORYLINES / PLAYOFFS ================= -->
+<section id="playoffs1952">
+  <div class="wide">
+    <div class="section-head">
+      <span class="label">From the Sports Page</span>
+      <h2>Storylines &amp; the 1952 Playoffs</h2>
+      <div class="rule"></div>
     </div>
 
-    <!-- Main App -->
-    <div id="mainApp" class="container hidden">
-        <!-- Header -->
-        <div class="header">
-            <div class="header-left">
-                <h1>Majors 2026 Draft</h1>
-                <span class="team-badge" id="teamBadge">Coach Bhan</span>
-            </div>
-            <div class="header-right">
-                <div class="pick-indicator" id="pickIndicator">1.01</div>
-                <div class="pick-label">Current Pick</div>
-            </div>
-        </div>
-
-        <!-- Main Grid -->
-        <div class="main-grid">
-            <!-- Draft Board -->
-            <div class="draft-board">
-                <div class="board-header">
-                    <h2>Draft Board</h2>
-                    <div class="round-selector" id="roundSelector">
-                        <!-- Rounds will be generated here -->
-                    </div>
-                </div>
-                <div class="picks-grid" id="picksGrid">
-                    <!-- Picks will be generated here -->
-                </div>
-            </div>
-
-            <!-- Available Players -->
-            <div class="best-available">
-                <h2>Available Players</h2>
-                
-                <div class="upload-section" id="uploadSection">
-                    <h3>Upload Player Rankings</h3>
-                    <div class="file-input-wrapper">
-                        <label class="btn-upload">
-                            Choose CSV File
-                            <input type="file" id="playerFile" accept=".csv" onchange="uploadPlayers(event)">
-                        </label>
-                    </div>
-                    <div class="upload-instructions">
-                        CSV format: Single column with player names
-                    </div>
-                </div>
-
-                <input type="text" class="search-box" id="playerSearch" placeholder="Search players..." oninput="filterPlayers()">
-
-                <div class="players-list" id="playersList">
-                    <div style="color: var(--text-secondary); text-align: center; padding: 2rem;">
-                        Upload a CSV file with player rankings to get started
-                    </div>
-                </div>
-            </div>
-
-            <!-- Control Panel -->
-            <div class="control-panel">
-                <div class="on-clock" id="onClockIndicator">
-                    <div class="on-clock-title">On The Clock</div>
-                    <div class="on-clock-team" id="onClockTeam">Coach Bhan</div>
-                    <div class="pick-timer" id="pickTimer">2:00</div>
-                </div>
-
-                <div class="form-group">
-                    <label for="playerName">Player Name</label>
-                    <input type="text" id="playerName" placeholder="Enter player name">
-                </div>
-
-                <button class="btn-submit" id="submitBtn" onclick="submitPick()">Submit Pick</button>
-
-                <div class="admin-controls" id="adminControls">
-                    <h3>Admin Controls</h3>
-                    <button class="btn-admin" onclick="undoLastPick()" style="background: linear-gradient(135deg, #f59e0b, #fbbf24); color: #000;">⟲ Undo Last Pick</button>
-                    <button class="btn-admin" onclick="openFullDraftGridModal()">Manage Full Draft Grid</button>
-                    <button class="btn-admin" onclick="openTeamAssignmentsModal()">Assign MLB Teams</button>
-                    <button class="btn-admin" onclick="openDraftOrderModal()">Set Draft Order</button>
-                    <button class="btn-admin" onclick="resetDraft()">Reset Draft</button>
-                    <button class="btn-admin" onclick="exportData()">Export Draft Data</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Team Rosters -->
-        <h2 style="font-family: 'Archivo Black', sans-serif; font-size: 1.8rem; margin-bottom: 1.5rem;">Team Rosters</h2>
-        <div class="team-rosters" id="teamRosters">
-            <!-- Rosters will be generated here -->
-        </div>
+    <div class="clip">
+      <div><img src="images/1952_burning_them_in.jpg" alt="Burning Them In - Jack Kegal pitching" onclick="openLB(this.src)"><p class="thumb-cap">Jack Kegal, "fireball pitcher" of the Yanks</p></div>
+      <div>
+        <div class="meta">'Burning' Them In &middot; 1st Place Spot in Doubt</div>
+        <h4>A pennant race with no clean finish</h4>
+        <p>Play in the league ended one week with the first-place winner still undecided. Because a tie game between the Giants and Cubs needed to be replayed, the league-leading Yanks couldn't yet be assured of the championship &mdash; a Cubs win would force a tie atop the standings, and a Giants win would force a second-place tiebreaker. The makeup games went unscheduled for a time because so many players were away at camp or on vacation.</p>
+      </div>
     </div>
 
-    <!-- Full Draft Grid Modal -->
-    <div id="fullDraftGridModal" class="modal-overlay hidden">
-        <div class="modal" style="max-width: 95vw; max-height: 90vh;">
-            <h2>Full Draft Grid - All 12 Rounds</h2>
-            <p class="modal-description">
-                View and edit all 144 picks. Pre-assign coach's kids to specific rounds based on their ranking. Click any cell to edit.
-            </p>
-            <div class="draft-grid-container" id="draftGridContainer">
-                <!-- Draft grid will be generated here -->
-            </div>
-            <div class="modal-actions">
-                <button class="btn-modal btn-modal-secondary" onclick="closeFullDraftGridModal()">Close</button>
-                <button class="btn-modal btn-modal-primary" onclick="saveDraftGrid()">Save Draft Grid</button>
-            </div>
-        </div>
+    <div class="clip">
+      <div><img src="images/1952_mark_up_another_run.jpg" alt="Mark Up Another Run - Yanks vs Cubs" onclick="openLB(this.src)"><p class="thumb-cap">John Melhuish crosses home for the Yanks</p></div>
+      <div>
+        <div class="meta">Mark Up Another Run</div>
+        <h4>Cubs edge the Yanks, 11&ndash;10</h4>
+        <p>Outfielder John Melhuish came in to score standing up on a single by Bobby Ziegler, with the Cub catcher anxiously calling for the ball &mdash; but the Yanks lost this one to the Cubs, 11 to 10.</p>
+      </div>
     </div>
 
-    <!-- Team Assignments Modal -->
-    <div id="teamAssignmentsModal" class="modal-overlay hidden">
-        <div class="modal">
-            <h2>Assign MLB Teams to Coaches</h2>
-            <p class="modal-description">
-                Assign City Connect MLB teams to each coach. This can be done before or after the draft.
-            </p>
-            <div class="team-assignments-list" id="teamAssignmentsList">
-                <!-- Team assignments will be generated here -->
-            </div>
-            <div class="modal-actions">
-                <button class="btn-modal btn-modal-secondary" onclick="closeTeamAssignmentsModal()">Cancel</button>
-                <button class="btn-modal btn-modal-primary" onclick="saveTeamAssignments()">Save Team Assignments</button>
-            </div>
-        </div>
+    <div class="clip">
+      <div><img src="images/1952_shibe_park_guests.jpg" alt="Newtown Square Little Leaguers Guests of Athletics" onclick="openLB(this.src)"><p class="thumb-cap">Trip to Shibe Park, Philadelphia</p></div>
+      <div>
+        <div class="meta">Newtown Square Little Leaguers Guests of Athletics</div>
+        <h4>Fifty-three boys at Shibe Park</h4>
+        <p>The league sent 53 boys to Shibe Park to watch the Philadelphia A's take on Cleveland, among roughly 8,000 Little Leaguers from the area. Eddie Woodward of the Giants was chosen to represent the league and received personal instruction at his position from major leaguer Ferris Fain. The Rotary Club of West Chester Pike thanked the boys for their conduct, and thanked the drivers who brought them: Collins, Miller, Crawford, E. Robinson, W. Robinson, Dry, Kegel, Woodward, Kerns, Poinsett, and Mathers.</p>
+      </div>
     </div>
 
-    <!-- Draft Order Modal -->
-    <div id="draftOrderModal" class="modal-overlay hidden">
-        <div class="modal">
-            <h2>Set Draft Order</h2>
-            <p class="modal-description">
-                Arrange teams in draft order. This will be used for Round 1 and snake order (reverse) for even rounds.
-            </p>
-            <div class="draft-order-list" id="draftOrderList">
-                <!-- Draft order items will be generated here -->
-            </div>
-            <div class="modal-actions">
-                <button class="btn-modal btn-modal-secondary" onclick="closeDraftOrderModal()">Cancel</button>
-                <button class="btn-modal btn-modal-primary" onclick="saveDraftOrder()">Save Draft Order</button>
-            </div>
-        </div>
+    <div class="clip">
+      <div><img src="images/1952_broomall_playoff_series.jpg" alt="Newtown-Broomall Little Leagues in Playoff Series" onclick="openLB(this.src)"><p class="thumb-cap">Series announcement</p></div>
+      <div>
+        <div class="meta">Newtown&ndash;Broomall Little Leagues in Playoff Series</div>
+        <h4>All-Stars set for a best-of-five</h4>
+        <p>All-Star squads representing the Newtown-Edgemont and Broomall Little Leagues met in a best-of-five series at the Broomall field. The Newtown-Edgemont roster: <strong>Infield</strong> &mdash; Jack Brady, Jim Calahan, Jim Gordon, Ed Woodward, Rebby Simmons, Frank Cropper, Joe Dulaney, Tom Dry, Elisha Brady, Dick Ewing, J. Fee. <strong>Outfielders</strong> &mdash; Ray McMahon, Bobby Palmerio, Jack Kirk. <strong>Pitchers</strong> &mdash; Jim Reardon, Bobby Zigler, Jack Keagle, Franklin Jenkins, Steve Collins.</p>
+      </div>
     </div>
 
-    <script>
-        const TEAMS = [
-            'Bhan', 'Cylc', 'Simpson', 'Giello', 'Rosci', 'Brady',
-            'White', 'Geary', 'Birzes', 'Renz', 'Bray', 'Hussar'
-        ];
+    <div class="clip">
+      <div><img src="images/1952_broomall_wins_p1.jpg" alt="Broomall All-Stars Win Playoffs in Three Games" onclick="openLB(this.src)"><p class="thumb-cap">August 21, 1952 edition</p></div>
+      <div>
+        <div class="meta">Broomall All-Stars Win Playoffs in Three Games</div>
+        <h4>A hard-fought finish to the season</h4>
+        <p>Broomall took the series in three straight &mdash; a 6&ndash;0 shutout, a lopsided 23&ndash;2 game, and a tight 6&ndash;3 finale that the paper called the best-played of the series. Buddy Young carried a no-hitter for Broomall into the sixth before Tom Dry singled to center; Newtown-Edgemont's Jim Reardon allowed only three hits. Shortstop Dry and second baseman Kegel each turned outstanding plays, Kegel's a running, unassisted double play.</p>
+        <details class="box-details">
+          <summary>View full box score, Game 3</summary>
+          <div class="boxscore-wrap">
+            <table class="box">
+              <tr><th colspan="4">Newtown-Edgemont All-Stars</th></tr>
+              <tr><th></th><th>AB</th><th>H</th><th>R</th></tr>
+              <tr><td>Simmons, 3b</td><td class="n">3</td><td class="n">0</td><td class="n">0</td></tr>
+              <tr><td>McMahon, rf</td><td class="n">3</td><td class="n">0</td><td class="n">1</td></tr>
+              <tr><td>Jenkins, lf</td><td class="n">3</td><td class="n">0</td><td class="n">1</td></tr>
+              <tr><td>Woodward, cf</td><td class="n">3</td><td class="n">0</td><td class="n">0</td></tr>
+              <tr><td>Dry, ss</td><td class="n">3</td><td class="n">1</td><td class="n">0</td></tr>
+              <tr><td>Reardon, p</td><td class="n">3</td><td class="n">0</td><td class="n">1</td></tr>
+              <tr><td>Callaghan, c</td><td class="n">3</td><td class="n">0</td><td class="n">0</td></tr>
+              <tr><td>Kegel, 2b</td><td class="n">2</td><td class="n">0</td><td class="n">0</td></tr>
+              <tr><td>Ewing, 1b</td><td class="n">2</td><td class="n">0</td><td class="n">0</td></tr>
+              <tr><td><strong>Totals</strong></td><td class="n"><strong>25</strong></td><td class="n"><strong>1</strong></td><td class="n"><strong>3</strong></td></tr>
+            </table>
+          </div>
+          <div class="boxscore-wrap">
+            <table class="box">
+              <tr><th colspan="4">Broomall All-Stars</th></tr>
+              <tr><th></th><th>AB</th><th>H</th><th>R</th></tr>
+              <tr><td>N. DePaul, 3b</td><td class="n">4</td><td class="n">1</td><td class="n">0</td></tr>
+              <tr><td>Spector, 1b</td><td class="n">3</td><td class="n">0</td><td class="n">0</td></tr>
+              <tr><td>Martin, c</td><td class="n">3</td><td class="n">1</td><td class="n">1</td></tr>
+              <tr><td>D. DePaul, 2b</td><td class="n">3</td><td class="n">0</td><td class="n">1</td></tr>
+              <tr><td>Anson, cf</td><td class="n">3</td><td class="n">0</td><td class="n">1</td></tr>
+              <tr><td>Young, p</td><td class="n">3</td><td class="n">0</td><td class="n">1</td></tr>
+              <tr><td>Bater, rf</td><td class="n">3</td><td class="n">1</td><td class="n">1</td></tr>
+              <tr><td>Morgan, ss</td><td class="n">3</td><td class="n">0</td><td class="n">1</td></tr>
+              <tr><td>J. Norman, lf</td><td class="n">1</td><td class="n">0</td><td class="n">0</td></tr>
+              <tr><td>Geehr, lf</td><td class="n">2</td><td class="n">0</td><td class="n">0</td></tr>
+              <tr><td><strong>Totals</strong></td><td class="n"><strong>28</strong></td><td class="n"><strong>3</strong></td><td class="n"><strong>6</strong></td></tr>
+            </table>
+          </div>
+          <p style="font-size:.85rem; color:var(--ink-soft);">Score by innings &mdash; Newtown Sq.: 1 0 0 0 0 2&mdash;3 &nbsp;|&nbsp; Broomall: 0 3 2 0 0 1&mdash;6. Umpires: Schofield (plate), Virtue (1st), Kegel (3rd). The paper closed the season thanking John Melhuish of the Ellis Country School for the season's photographs.</p>
+        </details>
+      </div>
+    </div>
 
-        const ACCESS_CODES = {
-            'BHAN25': 'Bhan',
-            'CYLC25': 'Cylc',
-            'SIMPSON25': 'Simpson',
-            'GIELLO25': 'Giello',
-            'ROSCI25': 'Rosci',
-            'BRADY25': 'Brady',
-            'WHITE25': 'White',
-            'GEARY25': 'Geary',
-            'BIRZES25': 'Birzes',
-            'RENZ25': 'Renz',
-            'BRAY25': 'Bray',
-            'HUSSAR25': 'Hussar',
-            'ADMIN2025': 'ADMIN'
-        };
+  </div>
+</section>
 
-        let currentTeam = '';
-        let currentRound = 1;
-        const TOTAL_ROUNDS = 12;
-        const PICKS_PER_ROUND = 12;
-        let allPlayers = [];
-        let searchTerm = '';
-        let customDraftOrder = null;
-        let teamAssignments = {};
-        
-        // Timer variables
-        let pickTimer = null;
-        let timeRemaining = 120; // 2 minutes in seconds
-        const PICK_TIME_LIMIT = 120;
+<!-- ================= 1953 FIELD ================= -->
+<section id="s1953" class="tint">
+  <div class="wide">
+    <div class="section-head">
+      <span class="label">Season Two</span>
+      <h2>1953 — A Home Field of Their Own</h2>
+      <div class="rule"></div>
+    </div>
+    <p class="intro-copy">The league returned in the spring of 1953 under a new name, the Newtown-Edgmont Little League, with 125 boys turning out for tryouts at the Marple-Newtown High School grounds under managers Frank Hargy, Fran Landrum, Vince Kearns, and Earl Robinson. That year the league also broke ground on a permanent home: a new field on Bishop Hollow Road, built with volunteer labor from both townships.</p>
 
-        async function undoLastPick() {
-            if (currentTeam !== 'ADMIN') {
-                alert('Admin access required');
-                return;
-            }
-            
-            const state = await loadDraftState();
-            
-            if (state.currentPickNumber <= 1) {
-                alert('No picks to undo');
-                return;
-            }
+    <div class="milestone">
+      <img src="images/1953_header_sign.jpg" alt="Home of Newtown-Edgmont Little League sign, 1953" onclick="openLB(this.src)">
+      <p style="color:var(--ink-soft); font-style:italic; margin:0;">The gateway sign at the new Bishop Hollow Road field, described by the league as "one of the finest Little League fields in the eastern United States."</p>
+    </div>
 
-            const lastPickNum = state.currentPickNumber - 1;
-            const lastPick = state.picks[lastPickNum];
-            
-            if (!lastPick.player) {
-                alert('Last pick is already empty');
-                return;
-            }
+    <div class="clip">
+      <div><img src="images/1953_tryouts.jpg" alt="125 Little Leaguers Participate in Tryouts" onclick="openLB(this.src)"><p class="thumb-cap">Tryout coverage, spring 1953</p></div>
+      <div>
+        <div class="meta">125 Little Leaguers Participate in Tryouts</div>
+        <h4>A promising turnout for the new season</h4>
+        <p>Field construction chairman Jim Gordon reported that wet weather had held up completion of the new grounds, though he and league president Dave Neff felt confident it would be ready within weeks. A second tryout session followed on April 25 &mdash; 8- and 9-year-olds from 9 to 10:30 a.m., 10- to 12-year-olds from 10:30 to noon.</p>
+      </div>
+    </div>
 
-            if (confirm(`Undo Pick ${lastPick.round}.${lastPick.pick}?\n\nPlayer: ${lastPick.player}\nTeam: Coach ${lastPick.team}`)) {
-                state.currentPickNumber--;
-                state.picks[lastPickNum].player = null;
-                state.picks[lastPickNum].mlbTeam = null;
-                if (!state.picks[lastPickNum].isPreAssigned) {
-                    state.picks[lastPickNum].isPreAssigned = false;
-                }
-                
-                await saveDraftState(state);
-                
-                // Refresh all UI components
-                const refreshedState = await loadDraftState();
-                renderDraftBoard(refreshedState);
-                renderRosters(refreshedState);
-                updateCurrentPick(refreshedState);
-                renderPlayers(refreshedState);
-                
-                alert('Pick undone successfully!');
-            }
-        }
+    <div class="clip">
+      <div><img src="images/1953_community_spirit.jpg" alt="N-E Little League Field Construction Reflects Community Spirit" onclick="openLB(this.src)"><p class="thumb-cap">Volunteers at work on the new grounds</p></div>
+      <div>
+        <div class="meta">N&ndash;E Little League Field Construction Reflects Community Spirit</div>
+        <h4>Built by the townships themselves</h4>
+        <p>Men of both Newtown and Edgemont Townships volunteered to rake stones, dig post holes, and build the outfield fence; local contractors donated equipment and labor for grading, dugout cement, and more. The field sat on a hill opposite the Troop Farm &mdash; a site the construction committee believed would rank among the finest Little League fields in the eastern United States.</p>
+      </div>
+    </div>
 
-        async function loadDraftState() {
-            // Load custom draft order first
-            try {
-                const orderResult = localStorage.getItem('draft-order');
-                if (orderResult) {
-                    customDraftOrder = JSON.parse(orderResult.value);
-                }
-            } catch (e) {
-                console.log('No custom draft order');
-            }
-            
-            try {
-                const result = localStorage.getItem('draft-state');
-                if (result) {
-                    const state = JSON.parse(result);
-                    // Make sure state has the current draft order
-                    if (customDraftOrder) {
-                        state.draftOrder = customDraftOrder;
-                    }
-                    return state;
-                }
-            } catch (e) {
-                console.log('No existing draft state');
-            }
-            
-            // Initialize empty draft state with custom order
-            const state = {
-                picks: {},
-                currentPickNumber: 1,
-                draftOrder: customDraftOrder || TEAMS.slice()
-            };
-            
-            for (let round = 1; round <= TOTAL_ROUNDS; round++) {
-                for (let pick = 1; pick <= PICKS_PER_ROUND; pick++) {
-                    const pickNum = ((round - 1) * PICKS_PER_ROUND) + pick;
-                    const teamIndex = (round % 2 === 1) ? (pick - 1) : (PICKS_PER_ROUND - pick);
-                    state.picks[pickNum] = {
-                        round: round,
-                        pick: pick,
-                        team: state.draftOrder[teamIndex],
-                        player: null,
-                        mlbTeam: null
-                    };
-                }
-            }
-            
-            return state;
-        }
+    <div class="clip">
+      <div><img src="images/1953_field_dedication.jpg" alt="Newtown-Edgmont Little League Field To Be Dedicated Memorial Day" onclick="openLB(this.src)"><p class="thumb-cap">Dedication announcement</p></div>
+      <div>
+        <div class="meta">Newtown&ndash;Edgmont Little League Field to Be Dedicated Memorial Day</div>
+        <h4>Saturday, May 30 &mdash; 1:00 p.m.</h4>
+        <p>The dedication opened with a flag-raising by the color guard of the Newtown Square VFW Post, followed by remarks from clergy and township supervisors, and a doubleheader &mdash; the first game at 1:30, the second at 3:30. All residents of both townships, and any others, were cordially invited.</p>
+      </div>
+    </div>
 
-        async function saveDraftState(state) {
-            try {
-                localStorage.setItem('draft-state', JSON.stringify(state));
-            } catch (e) {
-                console.error('Error saving draft state:', e);
-            }
-        }
+    <div class="clip">
+      <div><img src="images/1953_dedication_day_boxscore.jpg" alt="Yanks, Cards Win on New Field" onclick="openLB(this.src)"><p class="thumb-cap">June 6, 1953 dedication-day results</p></div>
+      <div>
+        <div class="meta">Yanks, Cards Win on New Field</div>
+        <h4>Dedication day, June 6, 1953</h4>
+        <p>Behind Jack Kegal's pitching, the Yankees beat the Giants 13&ndash;0 to celebrate the field's dedication; O'Connor and Sibole each collected two hits. In the second game, Manager Fran Landrum of the Cubs and Manager Earl Robinson of the Cards agreed in advance to stop the game after ten innings regardless of score &mdash; the teams were tied 9&ndash;9 entering the frame, and the Cards scored twice in their half to the Cubs' one, winning 11&ndash;10.</p>
+      </div>
+    </div>
 
-        function login() {
-            const code = document.getElementById('accessCode').value.trim().toUpperCase();
-            const team = ACCESS_CODES[code];
-            
-            if (team) {
-                currentTeam = team;
-                document.getElementById('errorMsg').style.display = 'none';
-                document.getElementById('loginScreen').classList.add('hidden');
-                document.getElementById('mainApp').classList.remove('hidden');
-                document.getElementById('teamBadge').textContent = team === 'ADMIN' ? 'Administrator' : 'Coach ' + team;
-                
-                if (team === 'ADMIN') {
-                    document.getElementById('adminControls').classList.remove('hidden');
-                } else {
-                    document.getElementById('adminControls').classList.add('hidden');
-                }
-                
-                initializeDraft();
-            } else {
-                document.getElementById('errorMsg').style.display = 'block';
-            }
-        }
+  </div>
+</section>
 
-        async function initializeDraft() {
-            const state = await loadDraftState();
-            
-            // Load team assignments
-            try {
-                const assignmentsResult = localStorage.getItem('team-assignments');
-                if (assignmentsResult) {
-                    teamAssignments = JSON.parse(assignmentsResult.value);
-                }
-            } catch (e) {
-                console.log('No team assignments');
-            }
-            
-            // Load players
-            await loadPlayers();
-            
-            // Generate round selector
-            const roundSelector = document.getElementById('roundSelector');
-            roundSelector.innerHTML = '';
-            for (let i = 1; i <= TOTAL_ROUNDS; i++) {
-                const btn = document.createElement('button');
-                btn.className = 'round-btn' + (i === currentRound ? ' active' : '');
-                btn.textContent = `R${i}`;
-                btn.onclick = () => switchRound(i);
-                roundSelector.appendChild(btn);
-            }
-            
-            renderDraftBoard(state);
-            renderRosters(state);
-            updateCurrentPick(state);
-            renderPlayers(state);
-            
-            // Auto-refresh disabled for local testing (no need since localStorage updates are instant)
-            // For production with window.storage, this enables real-time updates from other users
-        }
+<!-- ================= 1953 SEASON PLAY ================= -->
+<section id="teams1953">
+  <div class="wide">
+    <div class="section-head">
+      <span class="label">Game by Game</span>
+      <h2>1953 Season Play</h2>
+      <div class="rule"></div>
+    </div>
+    <p class="intro-copy">The same four clubs &mdash; Cubs, Giants, Yanks, and Cards &mdash; returned to defend their standing, now battling for the first Newtown-Edgmont Little League title on their brand-new field.</p>
 
-        async function loadPlayers() {
-            try {
-                const result = localStorage.getItem('player-rankings');
-                if (result) {
-                    allPlayers = JSON.parse(result);
-                    if (allPlayers.length > 0) {
-                        document.getElementById('uploadSection').style.display = 'none';
-                    }
-                }
-            } catch (e) {
-                console.log('No player rankings found');
-            }
-        }
+    <div class="clip">
+      <div><img src="images/1953_jenkins_no_hitter.jpg" alt="Jenkins Hurls No-Hitter as Cubs Beat Yanks for Title" onclick="openLB(this.src)"><p class="thumb-cap">First-half title game</p></div>
+      <div>
+        <div class="meta">Jenkins Hurls No-Hitter as Cubs Beat Yanks for Title</div>
+        <h4>Cubs 1, Yanks 0 &mdash; a pitcher's duel for the ages</h4>
+        <p>Jack Kegal of the Yanks threw a one-hitter; Frank Jenkins of the Cubs matched him with a no-hitter. The lone run scored on a walk and an overthrown ball. Winning manager Fran Landrum said the win didn't make the Cubs a much better team than the Yanks &mdash; Yanks manager Frank Hargy agreed his club "could have taken the win" with just a little more luck. Earlier in the week, the Cubs beat the Yanks again, 7&ndash;4, scoring five runs in the fifth inning behind Ray McMahon's pitching, and the Cards downed the Giants, 15&ndash;9, behind Jim Gordon, Pete Braun, and pitcher Seth Foster.</p>
+      </div>
+    </div>
 
-        async function uploadPlayers(event) {
-            const file = event.target.files[0];
-            if (!file) return;
+    <div class="clip">
+      <div><img src="images/1953_july4_family_day_boxscore.jpg" alt="Yanks, Giants Win in July 4th Doubleheader Marking Newtown-Edgmont Family Day" onclick="openLB(this.src)"><p class="thumb-cap">Family Day doubleheader</p></div>
+      <div>
+        <div class="meta">Yanks, Giants Win in July 4th Doubleheader &mdash; "Family Day"</div>
+        <h4>A full slate for Newtown-Edgmont Family Day</h4>
+        <p>The Yanks avenged an earlier loss to the Cubs, winning 6&ndash;3 on the strength of Jack Kegal's four-hit pitching and a six-run fourth inning off Frank Jenkins. In the nightcap, the Giants topped the Cards 12&ndash;7, with pitchers Booth and Cropper combining on the win.</p>
+        <details class="box-details">
+          <summary>View full box scores</summary>
+          <div class="boxscore-wrap">
+            <table class="box">
+              <tr><th colspan="4">Yanks (6) &mdash; def. Cubs (3)</th></tr>
+              <tr><th></th><th>AB</th><th>R</th><th>H</th></tr>
+              <tr><td>Frazier, rf</td><td class="n">0</td><td class="n">0</td><td class="n">0</td></tr>
+              <tr><td>Williamson, rf</td><td class="n">2</td><td class="n">1</td><td class="n">1</td></tr>
+              <tr><td>Melhuish, lf</td><td class="n">2</td><td class="n">1</td><td class="n">0</td></tr>
+              <tr><td>O'Connor, ss</td><td class="n">2</td><td class="n">0</td><td class="n">1</td></tr>
+              <tr><td>Ziegler, c</td><td class="n">3</td><td class="n">1</td><td class="n">1</td></tr>
+              <tr><td>Kegal, J., p</td><td class="n">2</td><td class="n">1</td><td class="n">0</td></tr>
+              <tr><td>Simmons, 1b</td><td class="n">3</td><td class="n">1</td><td class="n">2</td></tr>
+              <tr><td>Sibole, 2b/3b</td><td class="n">3</td><td class="n">1</td><td class="n">0</td></tr>
+              <tr><td><strong>Totals</strong></td><td class="n"><strong>23</strong></td><td class="n"><strong>6</strong></td><td class="n"><strong>5</strong></td></tr>
+            </table>
+          </div>
+          <div class="boxscore-wrap">
+            <table class="box">
+              <tr><th colspan="4">Giants (12) &mdash; def. Cards (7)</th></tr>
+              <tr><th></th><th>AB</th><th>R</th><th>H</th></tr>
+              <tr><td>J. Booth, p/2b</td><td class="n">5</td><td class="n">1</td><td class="n">1</td></tr>
+              <tr><td>Matters, 3b</td><td class="n">2</td><td class="n">2</td><td class="n">0</td></tr>
+              <tr><td>Cropper, 2b/p</td><td class="n">3</td><td class="n">2</td><td class="n">1</td></tr>
+              <tr><td>B. Brown, cf</td><td class="n">3</td><td class="n">3</td><td class="n">1</td></tr>
+              <tr><td>J. Smith, lf/rf</td><td class="n">3</td><td class="n">1</td><td class="n">1</td></tr>
+              <tr><td>A. Pease, 1b</td><td class="n">4</td><td class="n">1</td><td class="n">1</td></tr>
+              <tr><td>F. Fee, ss</td><td class="n">4</td><td class="n">1</td><td class="n">1</td></tr>
+              <tr><td><strong>Totals</strong></td><td class="n"><strong>30</strong></td><td class="n"><strong>12</strong></td><td class="n"><strong>7</strong></td></tr>
+            </table>
+          </div>
+        </details>
+      </div>
+    </div>
 
-            const reader = new FileReader();
-            reader.onload = async function(e) {
-                const text = e.target.result;
-                const lines = text.split('\n').filter(line => line.trim());
-                
-                allPlayers = [];
-                
-                // Skip header if present
-                const startIndex = lines[0].toLowerCase().includes('name') ? 1 : 0;
-                
-                for (let i = startIndex; i < lines.length; i++) {
-                    const parts = lines[i].split(',').map(p => p.trim());
-                    
-                    // Handle both single-column (just names) and multi-column (name, rating, age) formats
-                    if (parts.length >= 1 && parts[0]) {
-                        allPlayers.push({
-                            name: parts[0],
-                            rating: parseFloat(parts[1]) || 50, // Default rating if not provided
-                            age: parts[2] || '',
-                            rank: i - startIndex + 1
-                        });
-                    }
-                }
-                
-                // Sort alphabetically by name (since ratings are all the same)
-                allPlayers.sort((a, b) => a.name.localeCompare(b.name));
-                
-                // Update ranks based on alphabetical order
-                allPlayers.forEach((player, idx) => {
-                    player.rank = idx + 1;
-                });
-                
-                // Save to storage
-                localStorage.setItem('player-rankings', JSON.stringify(allPlayers));
-                
-                document.getElementById('uploadSection').style.display = 'none';
-                
-                // Show success message
-                alert(`✅ Successfully loaded ${allPlayers.length} players!`);
-                
-                const state = await loadDraftState();
-                renderPlayers(state);
-            };
-            
-            reader.readAsText(file);
-        }
+  </div>
+</section>
 
-        function filterPlayers() {
-            searchTerm = document.getElementById('playerSearch').value.toLowerCase();
-            loadDraftState().then(state => renderPlayers(state));
-        }
+<!-- ================= 1953 PLAYOFFS ================= -->
+<section id="playoffs1953" class="tint">
+  <div class="wide">
+    <div class="section-head">
+      <span class="label">Chasing Williamsport</span>
+      <h2>1953 Playoffs — The Road to the Regionals</h2>
+      <div class="rule"></div>
+    </div>
 
-        function renderPlayers(state) {
-            const container = document.getElementById('playersList');
-            
-            if (allPlayers.length === 0) {
-                container.innerHTML = '<div style="color: var(--text-secondary); text-align: center; padding: 2rem;">Upload a CSV file with player rankings to get started</div>';
-                return;
-            }
-            
-            // Get drafted players
-            const draftedPlayers = new Set();
-            Object.values(state.picks).forEach(pick => {
-                if (pick.player) {
-                    draftedPlayers.add(pick.player.toLowerCase());
-                }
-            });
-            
-            // Filter players - exclude drafted players and apply search filter
-            let filteredPlayers = allPlayers.filter(player => {
-                // Exclude drafted players
-                if (draftedPlayers.has(player.name.toLowerCase())) {
-                    return false;
-                }
-                
-                // Search filter
-                if (searchTerm && !player.name.toLowerCase().includes(searchTerm)) {
-                    return false;
-                }
-                
-                return true;
-            });
-            
-            container.innerHTML = '';
-            
-            filteredPlayers.forEach(player => {
-                const div = document.createElement('div');
-                div.className = 'player-item';
-                
-                div.innerHTML = `
-                    <div class="player-info" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
-                        <div style="flex: 1;">
-                            <div>
-                                <span class="player-name">${player.name}</span>
-                            </div>
-                            ${player.age && player.age !== '' && player.age !== 'Unknown' ? `<div class="player-details"><span>Age ${player.age}</span></div>` : ''}
-                        </div>
-                        <button onclick="selectAndDraft('${player.name.replace(/'/g, "\\'")}'); event.stopPropagation();" 
-                                style="background: linear-gradient(135deg, var(--accent-green), var(--accent-green-dark)); 
-                                       color: white; border: none; padding: 0.5rem 1rem; border-radius: 8px; 
-                                       font-weight: 700; cursor: pointer; white-space: nowrap; margin-left: 1rem;">
-                            SELECT
-                        </button>
-                    </div>
-                `;
-                
-                container.appendChild(div);
-            });
-            
-            if (filteredPlayers.length === 0) {
-                container.innerHTML = '<div style="color: var(--text-secondary); text-align: center; padding: 2rem;">No players found</div>';
-            }
-        }
+    <div class="clip">
+      <div><img src="images/1953_allstars_set_regional.jpg" alt="All-Stars Set in Two Leagues for Title Series" onclick="openLB(this.src)"><p class="thumb-cap">July 23, 1953 edition</p></div>
+      <div>
+        <div class="meta">All-Stars Set in Two Leagues for Title Series</div>
+        <h4>Regional play opens &mdash; a shot at Williamsport</h4>
+        <p>The Newtown-Edgmont and Broomall Little Leagues opened regional play in quest of a berth in the Little World Series at Williamsport, Pa. Newtown-Edgmont's All-Stars, selected by managers Frank Landrum, Earl Robinson, Vincent Kerns, and Frank Hargy, opened at home against Ashland-Middletown: Ed Bailey Jr., Franklin Jenkins, Ray McMahon, Dale Tarr, Jimmy Gordon, Steve Collins, Dick Shonwald, Frank Cropper, Bobby Ziegler, Jack Kegal, Kevin O'Connor, and Owen Simmons, with alternates Bill Brown and Ken Williamson.</p>
+      </div>
+    </div>
 
-        function selectAndDraft(playerName) {
-            document.getElementById('playerName').value = playerName;
-            // Scroll to the submit button
-            document.getElementById('submitBtn').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-            // Highlight the submit button briefly
-            const btn = document.getElementById('submitBtn');
-            btn.style.transform = 'scale(1.05)';
-            setTimeout(() => { btn.style.transform = ''; }, 200);
-        }
+    <div class="clip">
+      <div><img src="images/1953_darby_eliminated.jpg" alt="Newtown-Edgmont Eliminated From Playoffs by Darby, 11-1, After Winning First Game 6-3" onclick="openLB(this.src)"><p class="thumb-cap">July 30, 1953 edition</p></div>
+      <div>
+        <div class="meta">Newtown&ndash;Edgmont Eliminated from Playoffs by Darby, 11&ndash;1</div>
+        <h4>A promising run ends in the second round</h4>
+        <p>Jack Kegal beat Aston-Middletown, 6&ndash;3, on Monday night to keep the local nine's hopes alive. But the very next night, an early error opened the door for Darby to score five first-inning runs, and Newtown-Edgmont could not recover, falling 11&ndash;1 to end the season. "The baseball gods just weren't smiling on our heroes," the paper wrote, "but the pressure just kept building up."</p>
+      </div>
+    </div>
 
-        function selectPlayer(player) {
-            document.getElementById('playerName').value = player.name;
-        }
+  </div>
+</section>
 
-        function switchRound(round) {
-            currentRound = round;
-            document.querySelectorAll('.round-btn').forEach((btn, idx) => {
-                btn.classList.toggle('active', idx + 1 === round);
-            });
-            loadDraftState().then(state => renderDraftBoard(state));
-        }
+<!-- ================= 1954 SEASON ================= -->
+<section id="s1954" class="tint">
+  <div class="wide">
+    <div class="section-head">
+      <span class="label">Season Three</span>
+      <h2>1954 — A New Field, a Full Slate</h2>
+      <div class="rule"></div>
+    </div>
+    <p class="intro-copy">Little Leaguers paused on the diamond at Bishop Hollow Road before the 1954 opener, and the league returned with four teams &mdash; Cubs, Giants, Yanks, and Cards &mdash; plus, for the first time in the scrapbook's record, a farm system of younger squads: the Pirates, Dodgers, Orioles, and Indians.</p>
 
-        function renderDraftBoard(state) {
-            const grid = document.getElementById('picksGrid');
-            grid.innerHTML = '';
-            
-            const startPick = ((currentRound - 1) * PICKS_PER_ROUND) + 1;
-            const endPick = startPick + PICKS_PER_ROUND - 1;
-            
-            for (let pickNum = startPick; pickNum <= endPick; pickNum++) {
-                const pick = state.picks[pickNum];
-                const card = document.createElement('div');
-                
-                if (pick.player) {
-                    card.className = 'pick-card' + (pick.team === currentTeam ? ' my-pick' : '');
-                    card.innerHTML = `
-                        <div class="pick-number">Pick #${pickNum}</div>
-                        <div class="pick-team">Coach ${pick.team}</div>
-                        <div class="pick-player">${pick.player}</div>
-                        ${pick.mlbTeam ? `<div class="mlb-team-badge">${pick.mlbTeam}</div>` : ''}
-                    `;
-                } else {
-                    card.className = 'pick-card pick-empty';
-                    card.innerHTML = `
-                        <div class="pick-number">Pick #${pickNum}</div>
-                        <div class="pick-team">Coach ${pick.team}</div>
-                    `;
-                }
-                
-                grid.appendChild(card);
-            }
-        }
+    <div class="milestone">
+      <img src="images/1954_opening_header.jpg" alt="Little Leaguers Pause on Diamond Before Opening 1954 Season" onclick="openLB(this.src)">
+      <p style="color:var(--ink-soft); font-style:italic; margin:0;">Members of the Newtown-Edgmont Little League stand at attention during the flag-raising ceremony marking the opening of the 1954 season.</p>
+    </div>
 
-        function renderRosters(state) {
-            const container = document.getElementById('teamRosters');
-            container.innerHTML = '';
-            
-            TEAMS.forEach(team => {
-                const teamPicks = Object.values(state.picks).filter(p => p.team === team && p.player);
-                const totalPlayers = teamPicks.length;
-                
-                const card = document.createElement('div');
-                card.className = 'roster-card' + (team === currentTeam && currentTeam !== 'ADMIN' ? ' my-team' : '');
-                
-                let playersHTML = '';
-                
-                if (teamPicks.length > 0) {
-                    teamPicks.forEach(pick => {
-                        const isPreAssigned = pick.isPreAssigned === true;
-                        const style = isPreAssigned ? 'background: rgba(251, 191, 36, 0.1); border: 1px solid var(--accent-primary);' : '';
-                        
-                        playersHTML += `
-                            <div class="roster-player" style="${style}">
-                                <div>
-                                    <div class="roster-player-name">${pick.player}</div>
-                                    ${isPreAssigned ? '<div class="help-text" style="margin-top: 0.25rem;">Pre-Assigned</div>' : ''}
-                                    ${pick.mlbTeam ? `<div class="mlb-team-badge">${pick.mlbTeam}</div>` : ''}
-                                </div>
-                                <div class="roster-player-position">${isPreAssigned ? '⭐' : ''} R${pick.round}</div>
-                            </div>
-                        `;
-                    });
-                } else {
-                    playersHTML = '<div style="color: var(--text-secondary); text-align: center; padding: 1rem;">No picks yet</div>';
-                }
-                
-                // Show assigned MLB team in header if exists
-                const assignedMLB = teamAssignments[team];
-                const mlbBadge = assignedMLB ? `<div class="mlb-team-badge" style="margin-top: 0.5rem;">${assignedMLB}</div>` : '';
-                
-                card.innerHTML = `
-                    <div class="roster-header">
-                        <div>
-                            <div class="roster-team-name">Coach ${team}</div>
-                            ${mlbBadge}
-                        </div>
-                        <div class="roster-count">${totalPlayers} / 12 players</div>
-                    </div>
-                    <div class="roster-players">
-                        ${playersHTML}
-                    </div>
-                `;
-                
-                container.appendChild(card);
-            });
-        }
+    <div class="clip">
+      <div><img src="images/1954_season_opens_500_fans.jpg" alt="500 See Cubs, Giants Beat Yanks, Cards In Newtown Edgmont Little League Start" onclick="openLB(this.src)"><p class="thumb-cap">Opening day coverage</p></div>
+      <div>
+        <div class="meta">500 See Cubs, Giants Beat Yanks, Cards in Newtown-Edgmont Little League Start</div>
+        <h4>An opening day to remember</h4>
+        <p>The Rev. William Powel of St. Albans Episcopal Church gave the invocation; the Marple-Newtown High School Band and the color guard of VFW Post 4952 raised the colors, backed by the high school's marching drum majorettes. League president Jim Gordon introduced Edgmont Township Board president William Carney and Newtown Square police chief Albert Saffren, and Zeke Tar presented a check on behalf of the Women's Auxiliary to pay for new stands. Father Joseph T. Kane of St. Anastasia's gave the benediction before the doubleheader began. Fran Landrum's Cubs opened the season by beating the Yanks 11&ndash;3, led by Frank Jenkins' three hits in four at-bats and Glen Poinsett's clutch pitching. In the nightcap, Bob Bell's Giants topped the Cards 10&ndash;5 behind three-hit games from Frank Cropper and Frank Smith, with John Miller (3-for-3) keeping the Cards close. An estimated 500 fans called it the most memorable day in the league's history.</p>
+        <p style="font-size:.85rem;">A separate clipping pasted nearby, headlined "NE Little League Opens With Two Thrillers," gives a different tally for the Cubs&ndash;Yanks opener &mdash; Cubs 7, Yanks 0, decided on a sixth-inning bunt single by Mike Smith and a base hit by Miller, with Seth Foster the losing pitcher. The scrapbook doesn't make clear whether this refers to a different game, a different level of play, or an early wire report later corrected &mdash; both figures are preserved here as printed.</p>
+      </div>
+    </div>
 
-        function updateCurrentPick(state) {
-            const currentPick = state.picks[state.currentPickNumber];
-            if (currentPick) {
-                const pickNum = state.currentPickNumber;
-                document.getElementById('pickIndicator').textContent = `#${pickNum}`;
-                document.getElementById('onClockTeam').textContent = 'Coach ' + currentPick.team;
-                
-                const submitBtn = document.getElementById('submitBtn');
-                const isMyTurn = currentPick.team === currentTeam || currentTeam === 'ADMIN';
-                submitBtn.disabled = !isMyTurn;
-                submitBtn.textContent = isMyTurn ? 'Submit Pick' : 'Waiting for Coach ' + currentPick.team;
-                
-                // Start timer for new pick
-                startPickTimer();
-            }
-        }
+    <div class="clip">
+      <div><img src="images/1954_cubs_first_half_title.jpg" alt="Cubs Win First Half Title Despite Tie, Cards Take One in Newtown-Edgmont" onclick="openLB(this.src)"><p class="thumb-cap">Mid-season standings battle</p></div>
+      <div>
+        <div class="meta">Cubs Win First-Half Title Despite Tie &middot; Cards Take One</div>
+        <h4>An undefeated run, blemished only by a tie</h4>
+        <p>The undefeated Cubs claimed first-half honors, though a 2&ndash;2 tie with the Giants took some shine off it. In the final week, the Cards beat the Yanks 11&ndash;7 in a slugfest: John Muller started for the Cards but was pulled in the third after the Yanks scored four runs, keyed by a three-run homer from Morgan Sibole, who added a double and a single for four RBI on the day. Manager Crawford called in Seth Foster from the bullpen, and Henry Conrad's single in the sixth plated the go-ahead run for the Cards. John Miller and Skip Kromboltz combined for four of the Cards' seven hits.</p>
+      </div>
+    </div>
 
-        function startPickTimer() {
-            // Clear existing timer
-            if (pickTimer) {
-                clearInterval(pickTimer);
-            }
-            
-            // Reset time
-            timeRemaining = PICK_TIME_LIMIT;
-            updateTimerDisplay();
-            
-            // Start countdown
-            pickTimer = setInterval(() => {
-                timeRemaining--;
-                updateTimerDisplay();
-                
-                if (timeRemaining <= 0) {
-                    clearInterval(pickTimer);
-                    // Timer expired - you could add an alert or sound here
-                }
-            }, 1000);
-        }
+    <div class="clip">
+      <div><img src="images/1954_farm_team_pirates.jpg" alt="Pirates of Newtown-Edgmont League Trip Orioles, Take Farm Team Title" onclick="openLB(this.src)"><p class="thumb-cap">The farm league's first champions</p></div>
+      <div>
+        <div class="meta">Pirates of Newtown-Edgmont League Trip Orioles, Take Farm Team Title</div>
+        <h4>From the cellar to the pennant</h4>
+        <p>A year after finishing at the bottom, the Pirates clinched the farm-team championship by beating the Orioles, 10&ndash;2, with a five-run fifth inning breaking open a close game. Pitcher Dave Welsh allowed just two hits. The coaching staff of Joe Webb, Dave Welsh Sr., Jack Colsher, and Charles Alexander Sr. got credit for the turnaround, with standout play from Chuck Alexander, Bob Ewing, Frank Keenan, Bob Prestianne, and Lou Huss in the infield, and outfielders Alton Hopkins, Pete Neilson, Ed Jewett, Tom Colsher, and Joe Matters.</p>
+        <table class="standings" style="margin-top:14px;">
+          <caption>Farm league standings, as of the last Saturday of the season</caption>
+          <thead><tr><th>Team</th><th class="num">Won</th><th class="num">Lost</th></tr></thead>
+          <tbody>
+            <tr><td>Pirates</td><td class="num">7</td><td class="num">1</td></tr>
+            <tr><td>Dodgers</td><td class="num">5</td><td class="num">3</td></tr>
+            <tr><td>Orioles</td><td class="num">3</td><td class="num">5</td></tr>
+            <tr><td>Indians</td><td class="num">2</td><td class="num">6</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
 
-        function updateTimerDisplay() {
-            const minutes = Math.floor(timeRemaining / 60);
-            const seconds = timeRemaining % 60;
-            const display = `${minutes}:${seconds.toString().padStart(2, '0')}`;
-            
-            const timerElement = document.getElementById('pickTimer');
-            timerElement.textContent = display;
-            
-            // Change color based on time remaining
-            timerElement.className = 'pick-timer';
-            if (timeRemaining <= 30) {
-                timerElement.className = 'pick-timer danger';
-            } else if (timeRemaining <= 60) {
-                timerElement.className = 'pick-timer warning';
-            }
-        }
+    <div class="clip">
+      <div><img src="images/1954_allstars_topple_llanerch.jpg" alt="Newtown All-Stars Topple Llanerch" onclick="openLB(this.src)"><p class="thumb-cap">Opening round of the district playoffs</p></div>
+      <div>
+        <div class="meta">Newtown All-Stars Topple Llanerch, 12&ndash;3</div>
+        <h4>A rout in the divisional opener</h4>
+        <p>Newtown-Edgmont's All-Stars blasted Llanerch's All-Stars 12&ndash;3 in the Monday-night opener of the divisional playoffs on the road to the Little League World Series. Frank Cropper had an easy time on the mound, scattering the scoring across a four-run third, a two-run fourth, and a six-run fifth, while Llanerch made six errors behind him. Cropper went 2-for-2 at the plate; Frank Jenkins was 2-for-3 with a key double; Morgan Sibole added a two-run double of his own in the big fifth inning.</p>
+        <details class="box-details">
+          <summary>View full box score</summary>
+          <div class="boxscore-wrap">
+            <table class="box">
+              <tr><th colspan="5">Newtown-Edgmont (12)</th></tr>
+              <tr><th></th><th>AB</th><th>H</th><th>O</th><th>A</th></tr>
+              <tr><td>Dale Tarr, c</td><td class="n">3</td><td class="n">1</td><td class="n">10</td><td class="n">1</td></tr>
+              <tr><td>Ray McMahon, 3b</td><td class="n">3</td><td class="n">0</td><td class="n">1</td><td class="n">1</td></tr>
+              <tr><td>Frank Jenkins, ss</td><td class="n">3</td><td class="n">2</td><td class="n">5</td><td class="n">0</td></tr>
+              <tr><td>Lee Speca, 1b</td><td class="n">3</td><td class="n">1</td><td class="n">4</td><td class="n">0</td></tr>
+              <tr><td>Reb. Simmons, rf</td><td class="n">4</td><td class="n">1</td><td class="n">1</td><td class="n">0</td></tr>
+              <tr><td>Morgan Sibole, 2b</td><td class="n">4</td><td class="n">2</td><td class="n">1</td><td class="n">2</td></tr>
+              <tr><td>Dave Tarr, lf</td><td class="n">4</td><td class="n">0</td><td class="n">0</td><td class="n">0</td></tr>
+              <tr><td>Frank Cropper, p</td><td class="n">2</td><td class="n">2</td><td class="n">0</td><td class="n">2</td></tr>
+              <tr><td>Herb Heym, cf</td><td class="n">1</td><td class="n">0</td><td class="n">0</td><td class="n">0</td></tr>
+              <tr><td>Pewee McMahon, cf</td><td class="n">0</td><td class="n">0</td><td class="n">0</td><td class="n">0</td></tr>
+              <tr><td>Geo. Matters (alt.)</td><td class="n">1</td><td class="n">0</td><td class="n">0</td><td class="n">0</td></tr>
+              <tr><td><strong>Totals</strong></td><td class="n"><strong>28</strong></td><td class="n"><strong>9</strong></td><td class="n"><strong>18</strong></td><td class="n"><strong>7</strong></td></tr>
+            </table>
+          </div>
+          <div class="boxscore-wrap">
+            <table class="box">
+              <tr><th colspan="5">Llanerch (3)</th></tr>
+              <tr><th></th><th>AB</th><th>H</th><th>O</th><th>A</th></tr>
+              <tr><td>Higgins, ss</td><td class="n">3</td><td class="n">0</td><td class="n">0</td><td class="n">1</td></tr>
+              <tr><td>Oldham, 3b</td><td class="n">2</td><td class="n">0</td><td class="n">2</td><td class="n">1</td></tr>
+              <tr><td>Hayden, 1b</td><td class="n">4</td><td class="n">2</td><td class="n">2</td><td class="n">0</td></tr>
+              <tr><td>Wessinger, c</td><td class="n">3</td><td class="n">2</td><td class="n">8</td><td class="n">0</td></tr>
+              <tr><td>Schiavo, cf</td><td class="n">3</td><td class="n">1</td><td class="n">0</td><td class="n">0</td></tr>
+              <tr><td>Hunsberger, p</td><td class="n">3</td><td class="n">1</td><td class="n">0</td><td class="n">0</td></tr>
+              <tr><td>Callahan, p</td><td class="n">2</td><td class="n">1</td><td class="n">0</td><td class="n">0</td></tr>
+              <tr><td>Demidio, rf</td><td class="n">2</td><td class="n">0</td><td class="n">2</td><td class="n">0</td></tr>
+              <tr><td><strong>Totals</strong></td><td class="n"><strong>&mdash;</strong></td><td class="n"><strong>7</strong></td><td class="n"><strong>&mdash;</strong></td><td class="n"><strong>&mdash;</strong></td></tr>
+            </table>
+          </div>
+          <p style="font-size:.85rem; color:var(--ink-soft);">By innings &mdash; Newtown: 0 0 4 2 6 0 (12-9-2) &nbsp;|&nbsp; Llanerch: 0 0 0 0 1 2 (3-7-6). RBI: Jenkins 2, Sibole 2, Cropper 2, Dale Tarr 1, Speca 1, Hayden 2. Struck out: Cropper 10, Hunsberger 7, Callahan 1. Winning pitcher: Cropper. Losing pitcher: Hunsberger. Umpire: Young.</p>
+        </details>
+      </div>
+    </div>
 
-        async function submitPick() {
-            const playerName = document.getElementById('playerName').value.trim();
-            
-            if (!playerName) {
-                alert('Please enter player name');
-                return;
-            }
-            
-            const state = await loadDraftState();
-            
-            // Check if player is already drafted
-            const isAlreadyDrafted = Object.values(state.picks).some(p => 
-                p.player && p.player.toLowerCase() === playerName.toLowerCase()
-            );
-            
-            if (isAlreadyDrafted) {
-                alert(`${playerName} has already been drafted! Please select a different player.`);
-                return;
-            }
-            
-            const currentPick = state.picks[state.currentPickNumber];
-            
-            if (!currentPick) {
-                alert('Draft is complete!');
-                return;
-            }
-            
-            // Skip pre-assigned picks
-            if (currentPick.player && currentPick.isPreAssigned) {
-                alert(`This pick is pre-assigned to ${currentPick.player}. Skipping to next available pick.`);
-                state.currentPickNumber++;
-                await saveDraftState(state);
-                updateCurrentPick(state);
-                return;
-            }
-            
-            if (currentPick.team !== currentTeam && currentTeam !== 'ADMIN') {
-                alert('It is not your turn to pick');
-                return;
-            }
-            
-            // Make the pick
-            currentPick.player = playerName;
-            currentPick.mlbTeam = null; // No MLB team assignment
-            currentPick.isPreAssigned = false; // Mark as regular draft pick
-            state.currentPickNumber++;
-            
-            await saveDraftState(state);
-            
-            // Clear form
-            document.getElementById('playerName').value = '';
-            
-            // Refresh display
-            renderDraftBoard(state);
-            renderRosters(state);
-            updateCurrentPick(state);
-            renderPlayers(state);
-        }
+    <div class="clip">
+      <div><img src="images/1954_misplays_district_playoffs.jpg" alt="Misplays Jolt Newtown-Edgmont Stars From Little League District Playoffs" onclick="openLB(this.src)"><p class="thumb-cap">The season's final game</p></div>
+      <div>
+        <div class="meta">Misplays Jolt Newtown-Edgmont Stars from District Playoffs</div>
+        <h4>Chester East ends the run, 7&ndash;0</h4>
+        <p>Behind the pinpoint pitching of Charles Baker, Chester East blanked the locals 7&ndash;0, eliminating Newtown-Edgmont from the district playoffs. Baker allowed just four hits and only once did a Newtown runner reach third. Three unearned runs in the first, off starter Lee Speca, put the game out of reach early; Frank Jenkins relieved after a two-run homer and allowed just two hits the rest of the way. The paper noted the loss also closed out Little League careers (by age) for a long list of the league's stars: Frank Jenkins, Dale Tarr, Morgan Sibole, Owen Simmons, George Matters, John Smith, Bill Brown, Ray McMahon, Lee Speca, Herb Heym, Frank Cropper, Bill Frankland, Francis Fee (injured earlier in the season), Henry Conard, Guy Smith, Dick Spring, Butch Payne, Jerry McVeigh, and Bill Jewett &mdash; many of whom were moving up to the Babe Ruth League, coached by Jack Kegal, which was also completing a successful season.</p>
+      </div>
+    </div>
 
-        async function resetDraft() {
-            if (currentTeam !== 'ADMIN') {
-                alert('Admin access required');
-                return;
-            }
-            
-            if (!confirm('Are you sure you want to reset the entire draft? This cannot be undone.')) {
-                return;
-            }
-            
-            try {
-                localStorage.removeItem('draft-state');
-                // Optionally delete player rankings too
-                if (confirm('Also delete player rankings?')) {
-                    localStorage.removeItem('player-rankings');
-                }
-                // Note: draft-order is preserved so it persists across resets
-                location.reload();
-            } catch (e) {
-                console.error('Error resetting draft:', e);
-            }
-        }
+  </div>
+</section>
 
-        async function exportData() {
-            const state = await loadDraftState();
-            const dataStr = JSON.stringify(state, null, 2);
-            const dataBlob = new Blob([dataStr], { type: 'application/json' });
-            const url = URL.createObjectURL(dataBlob);
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = 'draft-results.json';
-            link.click();
-        }
+<!-- ================= 1955 SEASON ================= -->
+<section id="s1955">
+  <div class="wide">
+    <div class="section-head">
+      <span class="label">Season Four</span>
+      <h2>1955 — A Clubhouse Rises, the Cards Take the Pennant</h2>
+      <div class="rule"></div>
+    </div>
+    <p class="intro-copy">The Newtown-Edgmont Little League opened its 1955 season on Bishop Hollow Road with a flag-raising by the VFW color guard, an invocation from Reverend William Powel, and a welcome from league president Otto Lee. Four teams were back in action &mdash; Cubs, Giants, Yanks, and Cards &mdash; and by year's end the league had a new clubhouse under construction and had sent its best 15 players into a sectional playoff with Broomall.</p>
 
-        let tempDraftOrder = null;
+    <div class="clip">
+      <div><img src="images/1955_opens_two_thrillers.jpg" alt="NE Little League Opens With Two Thrillers" onclick="openLB(this.src)"><p class="thumb-cap">Opening week coverage</p></div>
+      <div>
+        <div class="meta">N&ndash;E Little League Opens with Two Thrillers</div>
+        <h4>Cubs blank the Yanks; Giants edge the Cards</h4>
+        <p>The season opened Monday night with the Cubs shutting out the Yanks, 7&ndash;0, after ceremonies at the ball park that included the VFW color guard's flag-raising, an invocation from Reverend William Powel, and a benediction from Father Kane. On Tuesday, the Giants nipped the Cards 2&ndash;1 in a pitchers' duel: Jerry Booth allowed just three scattered singles, walking two and striking out twelve. Dick Colsher scored the Giants' first run after a walk and a Harry Nuss double, and in the final inning Booth beat out a slow roller, Nuss doubled again, Dex Pierce walked, and Tommy Cunningham's line-drive single brought home the winning run.</p>
+        <details class="box-details">
+          <summary>View Giants&ndash;Cards box score, Tuesday</summary>
+          <div class="boxscore-wrap">
+            <table class="box">
+              <tr><th colspan="4">Giants (2)</th></tr>
+              <tr><th></th><th>AB</th><th>R</th><th>H</th></tr>
+              <tr><td>D. Colsher, cf</td><td class="n">1</td><td class="n">1</td><td class="n">0</td></tr>
+              <tr><td>Manges, rf</td><td class="n">2</td><td class="n">0</td><td class="n">0</td></tr>
+              <tr><td>Jerry Booth, p</td><td class="n">3</td><td class="n">1</td><td class="n">1</td></tr>
+              <tr><td>Nuss, ss</td><td class="n">3</td><td class="n">0</td><td class="n">3</td></tr>
+              <tr><td>Pierce, c</td><td class="n">2</td><td class="n">0</td><td class="n">0</td></tr>
+              <tr><td>Ewing, 1b</td><td class="n">1</td><td class="n">0</td><td class="n">0</td></tr>
+              <tr><td>Cunningham, lf</td><td class="n">3</td><td class="n">0</td><td class="n">1</td></tr>
+              <tr><td>Harris, 3b</td><td class="n">1</td><td class="n">0</td><td class="n">0</td></tr>
+              <tr><td>Bell, 2b</td><td class="n">1</td><td class="n">0</td><td class="n">0</td></tr>
+            </table>
+          </div>
+          <div class="boxscore-wrap">
+            <table class="box">
+              <tr><th colspan="4">Cards (1)</th></tr>
+              <tr><th></th><th>AB</th><th>R</th><th>H</th></tr>
+              <tr><td>Robinson, 3b</td><td class="n">1</td><td class="n">0</td><td class="n">0</td></tr>
+              <tr><td>Miller, ss</td><td class="n">3</td><td class="n">0</td><td class="n">0</td></tr>
+              <tr><td>McVeigh, 2b</td><td class="n">2</td><td class="n">0</td><td class="n">1</td></tr>
+              <tr><td>Malman, cf</td><td class="n">2</td><td class="n">0</td><td class="n">0</td></tr>
+              <tr><td>Gordon, c</td><td class="n">2</td><td class="n">0</td><td class="n">0</td></tr>
+              <tr><td>Roche, 1b</td><td class="n">2</td><td class="n">0</td><td class="n">0</td></tr>
+              <tr><td>Foster, p</td><td class="n">2</td><td class="n">0</td><td class="n">0</td></tr>
+              <tr><td>Smith, rf</td><td class="n">1</td><td class="n">1</td><td class="n">1</td></tr>
+              <tr><td>Kromboltz, 3b</td><td class="n">1</td><td class="n">0</td><td class="n">0</td></tr>
+            </table>
+          </div>
+          <p style="font-size:.85rem; color:var(--ink-soft);">A separate account elsewhere in the same clipping describes a sixth-inning bunt single by Mike Smith, advanced and driven in by a Miller single, with Seth Foster named the losing pitcher &mdash; details that don't fully square with the box score above. As with the 1954 opener, both versions are preserved here as printed.</p>
+        </details>
+      </div>
+    </div>
 
-        async function openFullDraftGridModal() {
-            if (currentTeam !== 'ADMIN') {
-                alert('Admin access required');
-                return;
-            }
+    <div class="clip">
+      <div><img src="images/1955_yanks_giants_standings.jpg" alt="Yanks Defeat Giants To Tie for First; Giants Undefeated In N-E Little League" onclick="openLB(this.src)"><p class="thumb-cap">Mid-season standings battle</p></div>
+      <div>
+        <div class="meta">Yanks Defeat Giants to Tie for First &middot; Giants Undefeated</div>
+        <h4>A tight race through midseason</h4>
+        <p>Davey McVeigh's bat was too much for the Cubs as the Cards rolled up their third straight win, 9&ndash;5 &mdash; McVeigh unloaded the bases with his second homer in two days, and the Cubs answered with three straight doubles from Bill Morrow, Don Tarr, and Dave Tarr before the Cards pulled away with a four-run final inning. On Thursday, the Yanks nosed out the Giants 3&ndash;2 on a three-run fourth inning, with Barry Kegal and Jerry Booth (11 strikeouts) starring for the winners.</p>
+        <p>A week later, the Giants remained undefeated: Bill Frazier out-pitched the Cubs for a 7&ndash;6 Yankee win, Larry Kress checked the Cards in an 11&ndash;4 Giants sweep, and Dick Colsher's Giants beat the Cubs 4&ndash;3 behind three hits and four RBI from Dex Pierce. In a seven-inning battle between the Yanks and Cards, Steve Loomis's eighth-inning double &mdash; his fourth straight hit &mdash; drove in the winning runs for a 7&ndash;4 Yankee win, while Bob Basener homered with two on for the Cubs in a losing effort.</p>
+        <table class="standings" style="margin-top:14px;">
+          <caption>Standings after the Yanks&ndash;Cards series</caption>
+          <thead><tr><th>Team</th><th class="num">Won</th><th class="num">Lost</th></tr></thead>
+          <tbody>
+            <tr><td>Giants</td><td class="num">4</td><td class="num">2</td></tr>
+            <tr><td>Yanks</td><td class="num">4</td><td class="num">2</td></tr>
+            <tr><td>Cards</td><td class="num">3</td><td class="num">3</td></tr>
+            <tr><td>Cubs</td><td class="num">1</td><td class="num">5</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
 
-            const state = await loadDraftState();
-            const container = document.getElementById('draftGridContainer');
-            
-            // Create legend
-            const legend = document.createElement('div');
-            legend.className = 'grid-legend';
-            legend.innerHTML = `
-                <div class="legend-item">
-                    <div class="legend-box pre-assigned"></div>
-                    <span>Pre-Assigned (Coach's Kid)</span>
-                </div>
-                <div class="legend-item">
-                    <div class="legend-box drafted"></div>
-                    <span>Drafted Player</span>
-                </div>
-                <div style="margin-left: auto; color: var(--text-secondary); font-size: 0.9rem;">
-                    Pick numbers snake: R1 left→right, R2 right→left, etc.
-                </div>
-            `;
-            
-            // Create grid
-            const grid = document.createElement('div');
-            grid.className = 'draft-grid';
-            
-            const draftOrder = state.draftOrder || TEAMS;
-            
-            // Single header row with coach names (stays consistent)
-            const headerRow = document.createElement('div');
-            headerRow.className = 'grid-header-row';
-            headerRow.innerHTML = '<div class="grid-header-cell">Round</div>';
-            
-            draftOrder.forEach(team => {
-                headerRow.innerHTML += `<div class="grid-header-cell">Coach ${team}</div>`;
-            });
-            
-            grid.appendChild(headerRow);
-            
-            // Data rows - one per round
-            for (let round = 1; round <= TOTAL_ROUNDS; round++) {
-                const row = document.createElement('div');
-                row.className = 'grid-row';
-                
-                // Round label
-                const roundCell = document.createElement('div');
-                roundCell.className = 'grid-cell round-label';
-                roundCell.textContent = `R${round}`;
-                row.appendChild(roundCell);
-                
-                // Picks for this round
-                const startPick = ((round - 1) * PICKS_PER_ROUND) + 1;
-                
-                // Create array of pick numbers for this round
-                const pickNumbers = [];
-                for (let i = 0; i < PICKS_PER_ROUND; i++) {
-                    pickNumbers.push(startPick + i);
-                }
-                
-                // If even round, reverse the pick numbers to show snake pattern
-                if (round % 2 === 0) {
-                    pickNumbers.reverse();
-                }
-                
-                // Display picks in column order (coaches stay in same columns)
-                pickNumbers.forEach((pickNum, colIndex) => {
-                    const pick = state.picks[pickNum];
-                    
-                    const cell = document.createElement('div');
-                    cell.className = 'grid-cell';
-                    
-                    const pickInfo = document.createElement('div');
-                    pickInfo.className = 'grid-pick-info';
-                    pickInfo.textContent = `Pick #${pickNum}`;
-                    pickInfo.style.fontWeight = '700';
-                    pickInfo.style.color = 'var(--accent-primary)';
-                    
-                    const input = document.createElement('input');
-                    input.type = 'text';
-                    input.className = 'grid-player-input';
-                    input.placeholder = 'Enter player name';
-                    input.value = pick.player || '';
-                    input.dataset.pickNum = pickNum;
-                    
-                    // Style based on state
-                    if (pick.player) {
-                        if (pick.isPreAssigned) {
-                            input.className = 'grid-player-input pre-assigned';
-                        } else {
-                            input.className = 'grid-player-input has-value';
-                        }
-                    }
-                    
-                    cell.appendChild(pickInfo);
-                    cell.appendChild(input);
-                    row.appendChild(cell);
-                });
-                
-                grid.appendChild(row);
-            }
-            
-            container.innerHTML = '';
-            container.appendChild(legend);
-            container.appendChild(grid);
-            
-            document.getElementById('fullDraftGridModal').classList.remove('hidden');
-        }
+    <div class="clip">
+      <div><img src="images/1955_cards_win_pennant.jpg" alt="Cards Win Pennant In N-E Little League" onclick="openLB(this.src)"><p class="thumb-cap">Season-ending playoff</p></div>
+      <div>
+        <div class="meta">Cards Win Pennant in N&ndash;E Little League</div>
+        <h4>A scrappy playoff settles it, 6&ndash;5</h4>
+        <p>The Cards, second-half winners, met the Giants, first-half winners, in a scrappy playoff game for the league championship &mdash; and came away with a close 6&ndash;5 victory to claim the pennant.</p>
+      </div>
+    </div>
 
-        function closeFullDraftGridModal() {
-            document.getElementById('fullDraftGridModal').classList.add('hidden');
-        }
+    <div class="clip">
+      <div><img src="images/1955_clubhouse_foundation.jpg" alt="Foundations poured for a new Newtown-Edgmont Little League clubhouse" onclick="openLB(this.src)"><p class="thumb-cap">Building for the future</p></div>
+      <div>
+        <div class="meta">Newtown-Edgmont Little League Success</div>
+        <h4>Ground broken on a new clubhouse</h4>
+        <p>Volunteers poured the foundations for a new clubhouse at the field, with James Gordon, George Mathers, John Colsher, and league president Otto Lee among the active workers who gave their time to the project.</p>
+      </div>
+    </div>
 
-        async function saveDraftGrid() {
-            const state = await loadDraftState();
-            const inputs = document.querySelectorAll('.grid-player-input');
-            
-            inputs.forEach(input => {
-                const pickNum = parseInt(input.dataset.pickNum);
-                const playerName = input.value.trim();
-                const pick = state.picks[pickNum];
-                
-                if (playerName && !pick.player) {
-                    // New pre-assignment
-                    pick.player = playerName;
-                    pick.isPreAssigned = true;
-                    pick.mlbTeam = null;
-                } else if (!playerName && pick.isPreAssigned) {
-                    // Removed pre-assignment
-                    pick.player = null;
-                    pick.isPreAssigned = false;
-                    pick.mlbTeam = null;
-                } else if (playerName && pick.isPreAssigned) {
-                    // Updated pre-assignment
-                    pick.player = playerName;
-                }
-                // Don't modify picks that were made during the draft (not pre-assigned)
-            });
-            
-            try {
-                await saveDraftState(state);
-                alert('Draft grid saved!');
-                closeFullDraftGridModal();
-                
-                // Refresh display
-                const refreshedState = await loadDraftState();
-                renderDraftBoard(refreshedState);
-                renderRosters(refreshedState);
-                updateCurrentPick(refreshedState);
-            } catch (error) {
-                console.error('Error saving draft grid:', error);
-                alert('Error saving draft grid: ' + error.message);
-            }
-        }
+    <div class="clip">
+      <div><img src="images/1955_babe_ruth_check_full.jpg" alt="Otto Lee presents a check to the Babe Ruth League" onclick="openLB(this.src)"><p class="thumb-cap">Fourth of July ceremony</p></div>
+      <div>
+        <div class="meta">A Gift to the Next League Up</div>
+        <h4>Little League seeds the new Babe Ruth League</h4>
+        <p>On the Fourth of July, league president Otto Lee presented a $25 check to David Heath of the newly formed Babe Ruth League, which gave graduating Little Leaguers ages 13&ndash;15 a place to keep playing. The new league was sponsored by the Marple-Newtown Optimist Club, and the gift was earmarked for equipment.</p>
+      </div>
+    </div>
 
-        async function openTeamAssignmentsModal() {
-            if (currentTeam !== 'ADMIN') {
-                alert('Admin access required');
-                return;
-            }
+    <div class="clip">
+      <div><img src="images/1955_ne_broomall_playoff_boxscore.jpg" alt="N-E, Broomall Meet in Little League Playoff" onclick="openLB(this.src)"><p class="thumb-cap">Sectional playoff coverage</p></div>
+      <div>
+        <div class="meta">N&ndash;E, Broomall Meet in Little League Playoff</div>
+        <h4>On the road to Williamsport &mdash; and a 12&ndash;3 loss</h4>
+        <p>With the regular season complete, the league sent its 15 best players into a sectional all-star series against Broomall, in a chase for a spot in the national championship at Williamsport. Newtown-Edgmont's All-Stars, managed by Cards skipper Joe Crawford and co-managed by Giants manager John Colsher, fell to Broomall's All-Stars &mdash; managed by George Lewis and co-managed by Tuck Danby &mdash; by a score of 12 to 3 in the Monday-night opener. The paper noted that the winner of the sectional would need to successively defeat every other sectional winner on the road to a possible national title in Williamsport that August, and closed with a simple wish: "Good luck, Little Leaguers!"</p>
+        <details class="box-details">
+          <summary>View full box score</summary>
+          <div class="boxscore-wrap">
+            <table class="box">
+              <tr><th colspan="4">Broomall All-Stars (12)</th></tr>
+              <tr><th></th><th>AB</th><th>H</th><th>R</th></tr>
+              <tr><td>Gibby DePaul, 2b</td><td class="n">2</td><td class="n">1</td><td class="n">2</td></tr>
+              <tr><td>Teddy Bonsall, 2b</td><td class="n">0</td><td class="n">1</td><td class="n">0</td></tr>
+              <tr><td>Bill Sieg, ss</td><td class="n">3</td><td class="n">0</td><td class="n">2</td></tr>
+              <tr><td>Bob Norman, p</td><td class="n">4</td><td class="n">2</td><td class="n">2</td></tr>
+              <tr><td>Fred Lamb, 1b</td><td class="n">3</td><td class="n">1</td><td class="n">1</td></tr>
+              <tr><td>Darrel Jones, cf</td><td class="n">2</td><td class="n">1</td><td class="n">1</td></tr>
+              <tr><td>Ronny Nagy, 3b</td><td class="n">3</td><td class="n">0</td><td class="n">0</td></tr>
+              <tr><td>Bill Herring, c</td><td class="n">2</td><td class="n">1</td><td class="n">2</td></tr>
+              <tr><td>Gary Boens, lf</td><td class="n">3</td><td class="n">1</td><td class="n">1</td></tr>
+              <tr><td><strong>Totals</strong></td><td class="n"><strong>26</strong></td><td class="n"><strong>7</strong></td><td class="n"><strong>12</strong></td></tr>
+            </table>
+          </div>
+          <div class="boxscore-wrap">
+            <table class="box">
+              <tr><th colspan="4">Newtown-Edgmont All-Stars (3)</th></tr>
+              <tr><th></th><th>AB</th><th>H</th><th>R</th></tr>
+              <tr><td>Dick Colsher, cf</td><td class="n">1</td><td class="n">0</td><td class="n">0</td></tr>
+              <tr><td>Dan Malman, lf</td><td class="n">4</td><td class="n">0</td><td class="n">0</td></tr>
+              <tr><td>Chubby Nuss, 2b</td><td class="n">2</td><td class="n">0</td><td class="n">0</td></tr>
+              <tr><td>Dave Tarr, 1b</td><td class="n">3</td><td class="n">1</td><td class="n">1</td></tr>
+              <tr><td>Dave McVeigh, ss</td><td class="n">3</td><td class="n">0</td><td class="n">0</td></tr>
+              <tr><td>Dexter Pierce, c</td><td class="n">1</td><td class="n">0</td><td class="n">1</td></tr>
+              <tr><td>Don Tarr, rf</td><td class="n">2</td><td class="n">1</td><td class="n">0</td></tr>
+              <tr><td>John Miller, rf/p</td><td class="n">1</td><td class="n">0</td><td class="n">0</td></tr>
+              <tr><td>Jerry Booth, p</td><td class="n">0</td><td class="n">0</td><td class="n">0</td></tr>
+              <tr><td>Drew Waltz, p</td><td class="n">1</td><td class="n">0</td><td class="n">0</td></tr>
+              <tr><td>John Gordon, p/c</td><td class="n">1</td><td class="n">0</td><td class="n">0</td></tr>
+              <tr><td><strong>Totals</strong></td><td class="n"><strong>20</strong></td><td class="n"><strong>3</strong></td><td class="n"><strong>3</strong></td></tr>
+            </table>
+          </div>
+        </details>
+      </div>
+    </div>
 
-            // Load existing team assignments
-            try {
-                const result = localStorage.getItem('team-assignments');
-                if (result) {
-                    teamAssignments = JSON.parse(result);
-                }
-            } catch (e) {
-                console.log('No team assignments found');
-                teamAssignments = {};
-            }
+    <div class="milestone">
+      <img src="images/1955_allstar_champs_team.jpg" alt="Members of the Newtown-Edgmont Little League All-Star Team, 1955" onclick="openLB(this.src)">
+      <p style="color:var(--ink-soft); font-style:italic; margin:0;">The 1955 Newtown-Edgmont All-Star Team. Back row: John Colsher (manager, Giants), Dave McVeigh, Drew Waltz, John Gordon, Dan Malman, Dex Pierce, Skip Kromboltz, John Miller, Joe Crawford (manager, Cards). Front row: Fran Roche, Dave Tarr, Dick Colsher, Harry Nuss, Jerry Booth, Don Tarr. Photo by Ed Kehl.</p>
+    </div>
 
-            const mlbTeams = ['', 'Arizona', 'Boston', 'Chicago', 'Cincinnati', 'Colorado', 'Dodgers', 
-                             'Miami', 'Milwaukee', 'NY Mets', 'Philadelphia', 'Pittsburgh', 'Seattle', 'Washington'];
+    <div class="clip">
+      <div><img src="images/1955_close_play_broomall.jpg" alt="Close Play - Ronnie Nagy of Broomall" onclick="openLB(this.src)"><p class="thumb-cap">A crucial moment at the plate</p></div>
+      <div>
+        <div class="meta">Close Play</div>
+        <h4>Ronnie Nagy waits for the throw</h4>
+        <p>"Ronnie Nagy of Broomall waits for the ball during a crucial moment in the Little League play-off game between Broomall and Newtown-Edgmont on Monday evening." Photo by Ed Kehl.</p>
+      </div>
+    </div>
 
-            const container = document.getElementById('teamAssignmentsList');
-            container.innerHTML = '';
-            
-            TEAMS.forEach(team => {
-                const div = document.createElement('div');
-                div.className = 'team-assignment-item';
-                const assignedTeam = teamAssignments[team] || '';
-                div.innerHTML = `
-                    <h4>Coach ${team}</h4>
-                    <select id="mlb-${team}">
-                        ${mlbTeams.map(mlb => `<option value="${mlb}" ${mlb === assignedTeam ? 'selected' : ''}>${mlb || 'Not Assigned'}</option>`).join('')}
-                    </select>
-                `;
-                container.appendChild(div);
-            });
-            
-            document.getElementById('teamAssignmentsModal').classList.remove('hidden');
-        }
+  </div>
+</section>
 
-        function closeTeamAssignmentsModal() {
-            document.getElementById('teamAssignmentsModal').classList.add('hidden');
-        }
+<!-- ================= 1956 SEASON ================= -->
+<section id="s1956" class="tint">
+  <div class="wide">
+    <div class="section-head">
+      <span class="label">Season Five</span>
+      <h2>1956 — A Finest Field, a Growing League</h2>
+      <div class="rule"></div>
+    </div>
+    <p class="intro-copy">By 1956 the Newtown-Edgmont Little League had grown well beyond its original four teams: a full minor-league system (Phillies, Orioles, Pirates, Indians, Dodgers, Braves, and more) was now feeding players up to the majors, and a community newsletter praised the Bishop Hollow Road grounds as "the finest Little League baseball field in Delaware County and one of the finest in the state."</p>
 
-        async function saveTeamAssignments() {
-            const newTeamAssignments = {};
-            
-            TEAMS.forEach(team => {
-                const select = document.getElementById(`mlb-${team}`);
-                const mlbTeam = select.value;
-                if (mlbTeam) {
-                    newTeamAssignments[team] = mlbTeam;
-                }
-            });
-            
-            // Check for duplicates
-            const assignedTeams = Object.values(newTeamAssignments);
-            const uniqueTeams = new Set(assignedTeams);
-            if (assignedTeams.length !== uniqueTeams.size) {
-                alert('Each MLB team can only be assigned to one coach');
-                return;
-            }
-            
-            try {
-                localStorage.setItem('team-assignments', JSON.stringify(newTeamAssignments));
-                teamAssignments = newTeamAssignments;
-                alert('Team assignments saved!');
-                closeTeamAssignmentsModal();
-                
-                // Refresh to show updated assignments
-                const state = await loadDraftState();
-                renderRosters(state);
-            } catch (error) {
-                console.error('Error saving team assignments:', error);
-                alert('Error saving team assignments: ' + error.message);
-            }
-        }
+    <div class="clip">
+      <div><img src="images/1956_yanks_slaughter_cubs_opener.jpg" alt="Yanks Slaughter Cubs, 12-1, in Opening Game of Newtown-Edgmont Little League" onclick="openLB(this.src)"><p class="thumb-cap">Opening night, Bishop Hollow Road</p></div>
+      <div>
+        <div class="meta">Yanks Slaughter Cubs, 12&ndash;1, in Opening Game</div>
+        <h4>A 350-strong crowd, and a rout to match</h4>
+        <p>The season opened Monday evening at Bishop Hollow Road with all the trimmings: an invocation from Reverend Paul F. Kramp of Messiah Lutheran Church before an estimated crowd of 350, a kickoff speech and team introductions from league president George Matters, a flag-raising by the color guard of the Newtown Square VFW Post 4952, a benediction from Reverend Joseph T. Kane of St. Anastasia's, and the ceremonial first pitch thrown by league vice president Robert Dougherty. Then the Yanks put on a show: a four-run first inning was all the cushion Bill Frazier needed, as he whiffed ten Cubs and didn't issue a single walk, blanking them in every inning but the second. Sandy Sabater's drive over the right-field wall, with Dave Neff and Gary Buyser aboard, was the big blow. Charles Roberts managed the Yanks; Fran Landrum guided the Cubs.</p>
+        <p>The league's minor-league teams also opened that Saturday, May 12: the Phillies blanked the Orioles 3&ndash;0, the Pirates topped the Indians 14&ndash;5, and the Dodgers defeated the Braves 11&ndash;6.</p>
+      </div>
+    </div>
 
-        async function openDraftOrderModal() {
-            if (currentTeam !== 'ADMIN') {
-                alert('Admin access required');
-                return;
-            }
+    <div class="clip">
+      <div><img src="images/1956_phillies_topple_indians_boxscore.jpg" alt="Phillies Topple Indians in Minors" onclick="openLB(this.src)"><p class="thumb-cap">Minor-league coverage</p></div>
+      <div>
+        <div class="meta">Phillies Topple Indians in Minors</div>
+        <h4>An eight-run third, and a Jim Milligan blast</h4>
+        <p>Playing in the Newtown-Edgmont minor league, the Phillies captured the second of their three games against the Indians, 10&ndash;1. Eight runs crossed the plate in the third inning to build an 8&ndash;1 lead, and Jim Milligan gave the crowd its biggest thrill with a bases-empty home run in the sixth.</p>
+      </div>
+    </div>
 
-            const state = await loadDraftState();
-            tempDraftOrder = state.draftOrder ? [...state.draftOrder] : [...TEAMS];
-            
-            renderDraftOrderList();
-            document.getElementById('draftOrderModal').classList.remove('hidden');
-        }
+    <div class="clip">
+      <div><img src="images/1956_cards_clinch_first_half.jpg" alt="Cards Clinch First-Half Sun Berth in Marple-Newtown Little League Play" onclick="openLB(this.src)"><p class="thumb-cap">Early-June standings shakeup</p></div>
+      <div>
+        <div class="meta">Cards Clinch First-Half Title in Marple-Newtown Little League Play</div>
+        <h4>A complete reshuffling of the standings</h4>
+        <p>The Cards and Cubs each won two games in a single week, upending the table. The Cards clinched first place at 6&ndash;2; the Cubs climbed from the cellar to tie the Yanks for second at 4&ndash;4; the Giants took over the basement at 2&ndash;6. Larry Kress hit a bases-loaded home run &mdash; the first in local Little League history, by the paper's account &mdash; but the Giants were still toppled by the Cards, 7&ndash;4. The Cubs' fourth straight win came behind Johnny Gordon, who fanned twelve Giants and held them to two hits in an 8&ndash;4 win over the Yanks, and the Cards clinched the first-half crown outright with a 6&ndash;3 win over the Giants.</p>
+        <table class="standings" style="margin-top:14px;">
+          <caption>Team standings after the June 4&ndash;7 stretch</caption>
+          <thead><tr><th>Team</th><th class="num">Won</th><th class="num">Lost</th></tr></thead>
+          <tbody>
+            <tr><td>Cards</td><td class="num">6</td><td class="num">2</td></tr>
+            <tr><td>Cubs</td><td class="num">4</td><td class="num">4</td></tr>
+            <tr><td>Yanks</td><td class="num">4</td><td class="num">4</td></tr>
+            <tr><td>Giants</td><td class="num">2</td><td class="num">6</td></tr>
+          </tbody>
+        </table>
+        <p style="font-size:.85rem; color:var(--ink-soft); margin-top:10px;">Minor league, Saturday June 9: Phils 8, Dodgers 6 &middot; Braves 10, Indians 7 &middot; Orioles 3, Pirates 2.</p>
+      </div>
+    </div>
 
-        function renderDraftOrderList() {
-            const container = document.getElementById('draftOrderList');
-            container.innerHTML = '';
-            
-            tempDraftOrder.forEach((team, index) => {
-                const div = document.createElement('div');
-                div.className = 'order-item';
-                div.innerHTML = `
-                    <div class="order-number">${index + 1}</div>
-                    <select onchange="updateDraftOrderTeam(${index}, this.value)">
-                        ${TEAMS.map(t => `<option value="${t}" ${t === team ? 'selected' : ''}>Coach ${t}</option>`).join('')}
-                    </select>
-                    <div class="order-controls">
-                        <button class="btn-move" onclick="moveDraftOrderUp(${index})" ${index === 0 ? 'disabled' : ''}>↑</button>
-                        <button class="btn-move" onclick="moveDraftOrderDown(${index})" ${index === tempDraftOrder.length - 1 ? 'disabled' : ''}>↓</button>
-                    </div>
-                `;
-                container.appendChild(div);
-            });
-        }
+    <div class="clip">
+      <div><img src="images/1956_harris_booth_shutout_boxscores.jpg" alt="Harris and Booth Combine to Hurl Two-Hit Shut-Out Win for Yanks, 7-0" onclick="openLB(this.src)"><p class="thumb-cap">Closing week of the season</p></div>
+      <div>
+        <div class="meta">Harris and Booth Combine for a Two-Hit Shutout, 7&ndash;0</div>
+        <h4>A jam-packed final box-score page</h4>
+        <p>A two-hit shutout in the closing games of the season was the headline act, with pitchers Harris and Booth sharing the honors. The clearest box score on this heavily cropped clipping shows a Giants pitching pair (Harris and Booth) blanking the Tigers 7&ndash;0, and elsewhere on the same page a Yanks&ndash;Cubs game ended 4&ndash;2 in the Yanks' favor. A separate minor-league box score records a lopsided 20&ndash;2 Indians win over the Orioles. Several additional box scores are packed onto this one clipping &mdash; including Redlegs&ndash;Cards and a second Tigers game &mdash; but portions are cropped or too faint to transcribe with confidence, so they're preserved here as images only rather than guessed-at text.</p>
+      </div>
+    </div>
 
-        function closeDraftOrderModal() {
-            document.getElementById('draftOrderModal').classList.add('hidden');
-            tempDraftOrder = null;
-        }
+    <div class="clip">
+      <div><img src="images/1956_cards_comeback_5_4.jpg" alt="Cards Come From Behind to Win 5-4" onclick="openLB(this.src)"><p class="thumb-cap">The championship playoff</p></div>
+      <div>
+        <div class="meta">Cards Come from Behind to Win, 5&ndash;4</div>
+        <h4>A four-run fourth settles the pennant</h4>
+        <p>In the playoff between the league's first- and second-half winners, four big runs in the fourth inning let the Cards erase a 1&ndash;3 deficit and edge the Yanks, 5&ndash;4. Four walks and a Gary Buyser double had put the Yanks up 3&ndash;1, but a Cards error, a walk to Roche, hits by Pyle and Stuppy, and a two-run double by Skip Kromboltz turned the game. Stuppy went 3-for-3 on the day; Fran Roche was credited with the win, while Bill Frazier took his second mound loss of the year.</p>
+        <details class="box-details">
+          <summary>View box score</summary>
+          <div class="boxscore-wrap">
+            <table class="box">
+              <tr><th colspan="4">Cards (5)</th></tr>
+              <tr><th></th><th>AB</th><th>R</th><th>H</th></tr>
+              <tr><td>Kromboltz, 2b</td><td class="n">4</td><td class="n">0</td><td class="n">1</td></tr>
+              <tr><td>McGillicuddy, cf</td><td class="n">4</td><td class="n">0</td><td class="n">1</td></tr>
+              <tr><td>McVeigh, ss</td><td class="n">4</td><td class="n">2</td><td class="n">1</td></tr>
+              <tr><td>Gordon, p</td><td class="n">3</td><td class="n">1</td><td class="n">0</td></tr>
+              <tr><td>Roche, p/c</td><td class="n">2</td><td class="n">1</td><td class="n">0</td></tr>
+              <tr><td>Smith, 3b</td><td class="n">3</td><td class="n">1</td><td class="n">0</td></tr>
+              <tr><td>Pyle, lf</td><td class="n">3</td><td class="n">1</td><td class="n">3</td></tr>
+              <tr><td>Stuppy, 1b</td><td class="n">3</td><td class="n">0</td><td class="n">1</td></tr>
+              <tr><td>Wellman, rf</td><td class="n">3</td><td class="n">0</td><td class="n">0</td></tr>
+            </table>
+          </div>
+          <div class="boxscore-wrap">
+            <table class="box">
+              <tr><th colspan="4">Yanks (4)</th></tr>
+              <tr><th></th><th>AB</th><th>R</th><th>H</th></tr>
+              <tr><td>Jackson, 3b</td><td class="n">3</td><td class="n">0</td><td class="n">0</td></tr>
+              <tr><td>Lyman, ss</td><td class="n">2</td><td class="n">0</td><td class="n">0</td></tr>
+              <tr><td>Neff, 2b</td><td class="n">3</td><td class="n">0</td><td class="n">1</td></tr>
+              <tr><td>Buyser, 1b</td><td class="n">3</td><td class="n">0</td><td class="n">1</td></tr>
+              <tr><td>Shultz, lf</td><td class="n">3</td><td class="n">1</td><td class="n">1</td></tr>
+              <tr><td>Frazier, p</td><td class="n">2</td><td class="n">1</td><td class="n">0</td></tr>
+              <tr><td>Murphy, cf</td><td class="n">0</td><td class="n">0</td><td class="n">0</td></tr>
+              <tr><td>Frazier, c</td><td class="n">1</td><td class="n">1</td><td class="n">0</td></tr>
+              <tr><td>Turner, c</td><td class="n">1</td><td class="n">0</td><td class="n">0</td></tr>
+              <tr><td>Sabater, rf</td><td class="n">&mdash;</td><td class="n">&mdash;</td><td class="n">&mdash;</td></tr>
+            </table>
+          </div>
+          <p style="font-size:.85rem; color:var(--ink-soft);">By innings &mdash; Cards: 0 1 0 4 0 0 (5) &nbsp;|&nbsp; Yanks: 0 0 3 1 0 0 (4).</p>
+        </details>
+      </div>
+    </div>
 
-        function updateDraftOrderTeam(index, team) {
-            tempDraftOrder[index] = team;
-        }
+    <div class="clip">
+      <div><img src="images/1956_allstars_upper_darby.jpg" alt="N-E Stars Take 10-5 Contest but Bow to Upper Darby Friday" onclick="openLB(this.src)"><p class="thumb-cap">All-Star tournament play</p></div>
+      <div>
+        <div class="meta">N&ndash;E Stars Take 10&ndash;5 Contest but Bow to Upper Darby</div>
+        <h4>A tournament win, then a tough loss</h4>
+        <p>The Newtown-Edgmont All-Stars erased Aston-Middletown 10&ndash;5 in their tournament opener. Bill Frazier held a heavy-hitting Middletown lineup to seven hits after a shaky start &mdash; a Lindy home run and singles by Packer and Aherns had staked Aston to an early 3-run lead. Newtown answered with four runs of its own on hits by Aherns, Roche, and a bases-clearing double from Dave McVeigh, plus RBI singles from Don Tarr and Frazier himself. Aston briefly regained the lead in the third on a Packer homer, but John Gordon's liner over the right-field fence tied it back up and started a lead Newtown never relinquished; Frazier settled in to allow just one more hit the rest of the way. Don Tarr went 3-for-3; Dave McVeigh, 2-for-4; Larry Kress, 2-for-4; Fran Roche, 2-for-3; and John Gordon added a home run.</p>
+        <p>The good run ended two days later: a "very good Newtown team was beaten by a better Upper Darby team, 8&ndash;1," overpowered by the pitching of Hamilton. John Gordon had the locals' first hit in the fifth, and a bases-loading rally was snuffed out by a diving, inning-ending double play from Upper Darby's Kraus. Bob Ewing added a pinch-hit single in the final inning but was stranded. Kraus and Shepley both homered for Upper Darby. The following Monday, Upper Darby beat Media on the Newtown field, 5&ndash;1, with Shepley hitting two more home runs.</p>
+      </div>
+    </div>
 
-        function moveDraftOrderUp(index) {
-            if (index === 0) return;
-            
-            [tempDraftOrder[index], tempDraftOrder[index - 1]] = [tempDraftOrder[index - 1], tempDraftOrder[index]];
-            
-            renderDraftOrderList();
-        }
+    <div class="clip">
+      <div><img src="images/1956_league_success_cooperative.jpg" alt="Newtown-Edgmont Little League Success Attributed to Many Cooperative Persons" onclick="openLB(this.src)"><p class="thumb-cap">A thank-you to the volunteers</p></div>
+      <div>
+        <div class="meta">League Success Attributed to Many Cooperative Persons</div>
+        <h4>Building "the finest field in Delaware County"</h4>
+        <p>A community editorial credited the league's success to its volunteers: James Gordon, George Matters, and Dave Neff, who built the field on Bishop Hollow Road with many helpers; Adrian Sabater, who made the league's signs; Otto Gunther, whose dedication to improving the field was called "an inspiration to all of us"; Warren von Uffel, who contributed the block work for the new clubhouse; and Vaughn Jackson, who had spent years developing the league since its inception, along with officers and directors who met monthly at the Messiah Lutheran Church Annex. The piece noted the field was believed to be "the finest Little League baseball field in Delaware County and one of the finest in the state," and thanked the local paper for delivering that year's season program, by hand, to every home in both townships.</p>
+      </div>
+    </div>
 
-        function moveDraftOrderDown(index) {
-            if (index === tempDraftOrder.length - 1) return;
-            
-            [tempDraftOrder[index], tempDraftOrder[index + 1]] = [tempDraftOrder[index + 1], tempDraftOrder[index]];
-            
-            renderDraftOrderList();
-        }
+  </div>
+</section>
 
-        async function saveDraftOrder() {
-            console.log('saveDraftOrder called');
-            console.log('tempDraftOrder:', tempDraftOrder);
-            
-            if (!tempDraftOrder) {
-                alert('No draft order to save');
-                return;
-            }
-            
-            // Check for duplicates
-            const uniqueTeams = new Set(tempDraftOrder);
-            if (uniqueTeams.size !== tempDraftOrder.length) {
-                alert('Each team can only appear once in the draft order');
-                return;
-            }
-            
-            console.log('Attempting to save draft order...');
-            
-            try {
-                // Save the draft order
-                localStorage.setItem('draft-order', JSON.stringify(tempDraftOrder));
-                console.log('Draft order saved to window.storage');
-                
-                customDraftOrder = [...tempDraftOrder];
-                
-                // Check if draft has started
-                const state = await loadDraftState();
-                console.log('Current state:', state);
-                
-                const hasStarted = Object.values(state.picks).some(p => p.player && !p.isPreAssigned);
-                console.log('Draft has started:', hasStarted);
-                
-                if (hasStarted) {
-                    closeDraftOrderModal();
-                    alert('Draft order saved, but the draft has already started with regular picks. The new order will NOT be applied to avoid disrupting the draft.');
-                    return;
-                }
-                
-                // Draft hasn't started (or only has pre-assigned picks), regenerate all picks with new order
-                const newState = {
-                    picks: {},
-                    currentPickNumber: 1,
-                    draftOrder: [...tempDraftOrder]
-                };
-                
-                // Regenerate all picks with new order
-                for (let round = 1; round <= TOTAL_ROUNDS; round++) {
-                    for (let pick = 1; pick <= PICKS_PER_ROUND; pick++) {
-                        const pickNum = ((round - 1) * PICKS_PER_ROUND) + pick;
-                        const teamIndex = (round % 2 === 1) ? (pick - 1) : (PICKS_PER_ROUND - pick);
-                        
-                        // Check if this pick had a pre-assigned player in the old state
-                        const oldPick = state.picks[pickNum];
-                        const isPreAssigned = oldPick && oldPick.isPreAssigned && oldPick.player;
-                        
-                        newState.picks[pickNum] = {
-                            round: round,
-                            pick: pick,
-                            team: newState.draftOrder[teamIndex],
-                            player: isPreAssigned ? oldPick.player : null,
-                            mlbTeam: isPreAssigned ? oldPick.mlbTeam : null,
-                            isPreAssigned: isPreAssigned
-                        };
-                    }
-                }
-                
-                await saveDraftState(newState);
-                
-                closeDraftOrderModal();
-                alert('Draft order saved and applied! All picks have been regenerated with the new order.');
-                location.reload();
-            } catch (error) {
-                console.error('Error saving draft order:', error);
-                alert('Error saving draft order: ' + error.message);
-            }
-        }
+<!-- ================= PLAYER INDEX ================= -->
+<section id="index">
+  <div class="wide">
+    <div class="section-head">
+      <span class="label">Look Someone Up</span>
+      <h2>Player &amp; Manager Index</h2>
+      <div class="rule"></div>
+    </div>
+    <div class="index-tools">
+      <input type="text" id="pfilter" placeholder="Search a name&hellip;" oninput="filterIndex()">
+      <div class="count" id="pcount"></div>
+    </div>
+    <table class="pindex" id="pindex-table">
+      <thead><tr><th>Name</th><th>Team</th><th>Season</th></tr></thead>
+      <tbody id="pindex-body"></tbody>
+    </table>
+  </div>
+</section>
 
-        // Handle Enter key on login
-        document.addEventListener('DOMContentLoaded', () => {
-            document.getElementById('accessCode').addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') login();
-            });
-        });
-    </script>
+<footer>
+  <h3>About This Archive</h3>
+  <p>These pages transcribe a family scrapbook of local newspaper clippings covering the Newtown Square and Newtown-Edgmont Little Leagues of Newtown &amp; Edgmont Townships, Pennsylvania, 1952&ndash;1967. Original clippings are reproduced above each summary. Spellings of names follow the original clippings, which were not always consistent from one article to the next.</p>
+  <div class="credits">Compiled and preserved as a permanent record &middot; original photography credited to John Melhuish, Ellis Country School</div>
+</footer>
+
+<dialog class="lightbox" id="lb">
+  <button onclick="document.getElementById('lb').close()">Close &times;</button>
+  <img id="lb-img" src="" alt="Enlarged clipping">
+</dialog>
+
+<script>
+function openLB(src){
+  document.getElementById('lb-img').src = src;
+  document.getElementById('lb').showModal();
+}
+document.getElementById('lb').addEventListener('click', function(e){
+  if(e.target === this) this.close();
+});
+
+const PLAYERS = [
+  // 1952 Cubs
+  ["Dew Waltz","Cubs","1952"],["Don Tarr","Cubs","1952"],["Dick Spring","Cubs","1952"],
+  ["Ron Basener","Cubs","1952"],["Bob Basener","Cubs","1952"],["Glen Poinsett","Cubs","1952"],
+  ["Jim Glodfelty","Cubs","1952"],["Bill Frankland","Cubs","1952"],["Rick Harrison","Cubs","1952"],
+  ["Joe Klingler","Cubs","1952"],["Garry Lewis","Cubs","1952"],["Dale Tarr","Cubs","1952"],
+  ["Ed Bailey, Jr.","Cubs","1952"],["Tom Dry","Cubs","1952"],["Tom Harper","Cubs","1952"],
+  ["Franny Landrum (Manager)","Cubs","1952"],
+  // 1952 Giants
+  ["Michael Kerns","Giants","1952"],["Frank Cropper","Giants","1952"],["Jimmy Fee","Giants","1952"],
+  ["John Kerns","Giants","1952"],["Bill Brown","Giants","1952"],["George Matters","Giants","1952"],
+  ["Jimmy McVeigh","Giants","1952"],["Arthur Pease","Giants","1952"],["Jimmy Callaghan","Giants","1952"],
+  ["Jim Reardon","Giants","1952"],["Eddie Woodward","Giants","1952"],["Jerry McVeigh","Giants","1952"],
+  ["John Smith","Giants","1952"],["Vincent Kerns (Manager)","Giants","1952"],
+  // 1952 Yanks
+  ["John Melhuish","Yanks","1952"],["Bill Frazier","Yanks","1952"],["Jimmy Jackson","Yanks","1952"],
+  ["Barry Kegal","Yanks","1952"],["Art Toensmeier","Yanks","1952"],["Frank Kegal","Yanks","1952"],
+  ["Owen Simmons","Yanks","1952"],["Jack Kegal","Yanks","1952"],["Tony Robinson","Yanks","1952"],
+  ["Dave Toensmeier","Yanks","1952"],["Bobby Ziegler","Yanks","1952"],["Dave Duncan","Yanks","1952"],
+  ["Gene Conard","Yanks","1952"],["Frank Hargy (Manager)","Yanks","1952"],
+  // 1952 Cards
+  ["John Miller","Cards","1952"],["Butch Payne","Cards","1952"],["Skipper Kromholz","Cards","1952"],
+  ["Earl Robinson","Cards","1952"],["Jim Rigby","Cards","1952"],["Joe Dulaney","Cards","1952"],
+  ["Steve Collins","Cards","1952"],["Dick Shornwald","Cards","1952"],["Franny Roche","Cards","1952"],
+  ["Dave Gilbert","Cards","1952"],["Jack Kirk","Cards","1952"],["Jim Gordon","Cards","1952"],
+  ["Larry Wyatt","Cards","1952"],["Harry Statzell","Cards","1952"],["Earle S. Robinson (Manager)","Cards","1952"],
+  // 1952 All-Stars (vs Broomall)
+  ["Jack Brady","All-Stars","1952"],["Jim Calahan","All-Stars","1952"],["Rebby Simmons","All-Stars","1952"],
+  ["Elisha Brady","All-Stars","1952"],["Dick Ewing","All-Stars","1952"],["Bobby Palmerio","All-Stars","1952"],
+  ["Jack Keagle","All-Stars","1952"],["Franklin Jenkins","All-Stars","1952"],
+  // 1953 Cubs
+  ["Frank Jenkins","Cubs","1953"],["Ray McMahon","Cubs","1953"],["Dave Tarr","Cubs","1953"],
+  ["F. Bailey","Cubs","1953"],["Peewee McMahon","Cubs","1953"],["Klingler","Cubs","1953"],
+  ["D. Spring","Cubs","1953"],["Fran Landrum (Manager)","Cubs","1953"],
+  // 1953 Giants
+  ["G. Booth","Giants","1953"],["Record","Giants","1953"],["Smedley","Giants","1953"],
+  ["Guy Smith","Giants","1953"],["Peirce","Giants","1953"],["Vince Kerns (Manager)","Giants","1953"],
+  // 1953 Yanks
+  ["Kevin O'Connor","Yanks","1953"],["Sibole","Yanks","1953"],["Zigler (Ziegler)","Yanks","1953"],
+  ["Williamson","Yanks","1953"],["Jackson","Yanks","1953"],["Sabateur","Yanks","1953"],
+  // 1953 Cards
+  ["Kromboltz","Cards","1953"],["John Gordon","Cards","1953"],["Payne","Cards","1953"],
+  ["Schonwald","Cards","1953"],["Wyatt","Cards","1953"],["Heym","Cards","1953"],
+  ["Roche","Cards","1953"],["Jewett","Cards","1953"],["Foster","Cards","1953"],
+  ["Pete Braun","Cards","1953"],["Earl Robinson (Manager)","Cards","1953"],
+  // 1953 All-Stars (regional)
+  ["Dale Tarr","All-Stars","1953"],["Jimmy Gordon","All-Stars","1953"],["Dick Shonwald","All-Stars","1953"],
+  ["Ken Williamson (Alt.)","All-Stars","1953"],
+  // 1954 Cubs
+  ["Frank Jenkins","Cubs","1954"],["Glen Poinsett","Cubs","1954"],["Fran Landrum (Manager)","Cubs","1954"],
+  // 1954 Giants
+  ["Frank Cropper","Giants","1954"],["Frank Smith","Giants","1954"],["Bob Bell (Manager)","Giants","1954"],
+  // 1954 Cards
+  ["John Miller","Cards","1954"],["John Muller","Cards","1954"],["Skip Kromboltz","Cards","1954"],
+  ["Seth Foster","Cards","1954"],["Manager Crawford (Manager)","Cards","1954"],
+  // 1954 Yanks
+  ["Morgan Sibole","Yanks","1954"],["Henry Conrad","Yanks","1954"],["Mike Smith","Yanks","1954"],
+  // 1954 All-Stars (vs Llanerch, Chester East)
+  ["Dale Tarr","All-Stars","1954"],["Ray McMahon","All-Stars","1954"],["Lee Speca","All-Stars","1954"],
+  ["Reb. Simmons","All-Stars","1954"],["Dave Tarr","All-Stars","1954"],["Herb Heym","All-Stars","1954"],
+  ["Pewee McMahon","All-Stars","1954"],["Geo. Matters (Alt.)","All-Stars","1954"],
+  ["Jerry Booth (Alt.)","All-Stars","1954"],["Don Tarr (Alt.)","All-Stars","1954"],["John Smith (Alt.)","All-Stars","1954"],
+  ["Owen Simmons","All-Stars","1954"],["George Matters","All-Stars","1954"],["Bill Brown","All-Stars","1954"],
+  ["Bill Frankland","All-Stars","1954"],["Francis Fee","All-Stars","1954"],["Henry Conard","All-Stars","1954"],
+  ["Guy Smith","All-Stars","1954"],["Dick Spring","All-Stars","1954"],["Butch Payne","All-Stars","1954"],
+  ["Jerry McVeigh","All-Stars","1954"],["Bill Jewett","All-Stars","1954"],
+  // 1954 Farm League - Pirates (champions)
+  ["Dave Welsh","Pirates (Farm)","1954"],["Chuck Alexander","Pirates (Farm)","1954"],["Bob Ewing","Pirates (Farm)","1954"],
+  ["Frank Keenan","Pirates (Farm)","1954"],["Bob Prestianne","Pirates (Farm)","1954"],["Lou Huss","Pirates (Farm)","1954"],
+  ["Alton Hopkins","Pirates (Farm)","1954"],["Pete Neilson","Pirates (Farm)","1954"],["Ed Jewett","Pirates (Farm)","1954"],
+  ["Tom Colsher","Pirates (Farm)","1954"],["Joe Matters","Pirates (Farm)","1954"],
+  ["Joe Webb (Coach)","Pirates (Farm)","1954"],["Dave Welsh, Sr. (Coach)","Pirates (Farm)","1954"],
+  ["Jack Colsher (Coach)","Pirates (Farm)","1954"],["Charles Alexander, Sr. (Coach)","Pirates (Farm)","1954"],
+  // 1954 Farm League - Giants (opening day box score fragment)
+  ["D. Colsher","Giants (Farm)","1954"],["Manges","Giants (Farm)","1954"],["Jerry Booth","Giants (Farm)","1954"],
+  ["Nuss","Giants (Farm)","1954"],
+  // 1954 Little League All-Star opponents
+  ["Charles Baker","Chester East","1954"],
+  // 1955 Cubs
+  ["Bill Morrow","Cubs","1955"],["Don Tarr","Cubs","1955"],["Dave Tarr","Cubs","1955"],["Bob Basener","Cubs","1955"],
+  // 1955 Giants (undefeated first half)
+  ["Dick Colsher","Giants","1955"],["Harry Nuss","Giants","1955"],["Jerry Booth","Giants","1955"],
+  ["Dex Pierce","Giants","1955"],["Tommy Cunningham","Giants","1955"],["Larry Kress","Giants","1955"],
+  ["Manges","Giants","1955"],["Ewing","Giants","1955"],["Harris","Giants","1955"],["Bell","Giants","1955"],
+  ["T. Colsher","Giants","1955"],["Kerns","Giants","1955"],["Huss","Giants","1955"],["Jeff Booth","Giants","1955"],
+  ["Brown","Giants","1955"],["John Colsher (Manager)","Giants","1955"],
+  // 1955 Cards (pennant winners)
+  ["John Miller","Cards","1955"],["Dave McVeigh","Cards","1955"],["Dan Malman","Cards","1955"],
+  ["John Gordon","Cards","1955"],["Fran Roche","Cards","1955"],["Seth Foster","Cards","1955"],
+  ["Skip Kromboltz","Cards","1955"],["Robinson","Cards","1955"],["Carr","Cards","1955"],["Smith","Cards","1955"],
+  ["Stuppy","Cards","1955"],["McGillicuddy","Cards","1955"],["Pyle","Cards","1955"],["Flebbe","Cards","1955"],
+  ["Wellman","Cards","1955"],["Joe Crawford (Manager)","Cards","1955"],
+  // 1955 Yanks
+  ["Barry Kegal","Yanks","1955"],["Dave Neff","Yanks","1955"],["Steve Loomis","Yanks","1955"],
+  ["Dave Welsh","Yanks","1955"],["Bill Frazier","Yanks","1955"],["Keating","Yanks","1955"],["Mike Smith","Yanks","1955"],
+  // 1955 All-Stars (vs Broomall)
+  ["Dick Colsher","All-Stars","1955"],["Dan Malman","All-Stars","1955"],["Chubby Nuss","All-Stars","1955"],
+  ["Dave Tarr","All-Stars","1955"],["Dave McVeigh","All-Stars","1955"],["Dexter Pierce","All-Stars","1955"],
+  ["Jim Jackson","All-Stars","1955"],["Steve Loomis","All-Stars","1955"],["Barry Kegel","All-Stars","1955"],
+  ["Don Tarr","All-Stars","1955"],["John Miller","All-Stars","1955"],["Jerry Booth","All-Stars","1955"],
+  ["Drew Waltz","All-Stars","1955"],["John Gordon","All-Stars","1955"],
+  // 1955 Broomall All-Stars (opponents)
+  ["Gibby DePaul","Broomall","1955"],["Teddy Bonsall","Broomall","1955"],["Bill Sieg","Broomall","1955"],
+  ["Bob Norman","Broomall","1955"],["Fred Lamb","Broomall","1955"],["Darrel Jones","Broomall","1955"],
+  ["Ronny Nagy","Broomall","1955"],["Fred Lubker","Broomall","1955"],["Bill Herring","Broomall","1955"],
+  ["Joe Mariani","Broomall","1955"],["Bob Gillmor","Broomall","1955"],["Gary Boens","Broomall","1955"],
+  ["Owen Shaeffer","Broomall","1955"],["George Lewis (Manager)","Broomall","1955"],["Tuck Danby (Manager)","Broomall","1955"],
+  // 1955 League builders & civic figures
+  ["James Gordon","League Officer","1955"],["George Mathers","League Officer","1955"],
+  ["Otto Lee (League President)","League Officer","1955"],["David Heath (Babe Ruth League)","League Officer","1955"],
+  // 1956 Yanks (Manager Charles Roberts)
+  ["Bill Frazier","Yanks","1956"],["Jim Jackson","Yanks","1956"],["Dave Neff","Yanks","1956"],
+  ["Gary Buyser","Yanks","1956"],["Sandy Sabater","Yanks","1956"],["Lyman","Yanks","1956"],
+  ["Murphy","Yanks","1956"],["Turner","Yanks","1956"],["Fee","Yanks","1956"],["Shultz","Yanks","1956"],
+  ["Zirdon","Yanks","1956"],["Charles Roberts (Manager)","Yanks","1956"],
+  // 1956 Cubs (Manager Fran Landrum)
+  ["Bill Morrow","Cubs","1956"],["Jim Wozniak","Cubs","1956"],["Dulaney","Cubs","1956"],
+  ["Finley","Cubs","1956"],["Fran Landrum (Manager)","Cubs","1956"],
+  // 1956 Cards
+  ["Johnny Gordon","Cards","1956"],["John Gordon","Cards","1956"],["Fran Roche","Cards","1956"],
+  ["Skip Kromboltz","Cards","1956"],["Dave McVeigh","Cards","1956"],["Stuppy","Cards","1956"],
+  ["Pyle","Cards","1956"],["Smith","Cards","1956"],["McGillicuddy","Cards","1956"],["Don Tarr","Cards","1956"],
+  ["Ward Wellman","Cards","1956"],["Bob Ewing","Cards","1956"],
+  // 1956 Giants
+  ["Larry Kress","Giants","1956"],["Harris","Giants","1956"],["Jeff Booth","Giants","1956"],
+  ["Bell","Giants","1956"],["Brown","Giants","1956"],["Kerns","Giants","1956"],["Guenther","Giants","1956"],
+  ["Matters","Giants","1956"],["Frankland","Giants","1956"],
+  // 1956 League officers & builders
+  ["George Matters (League President)","League Officer","1956"],["James Gordon","League Officer","1956"],
+  ["Robert Dougherty (VP)","League Officer","1956"],["Adrian Sabater","League Officer","1956"],
+  ["Otto Gunther","League Officer","1956"],["Warren von Uffel","League Officer","1956"],
+  ["Vaughn Jackson","League Officer","1956"],
+  // 1956 Minor League - Phillies
+  ["Joe Gastagna","Phillies (Minors)","1956"],["Jack Chidester","Phillies (Minors)","1956"],
+  ["Jim Mulligan","Phillies (Minors)","1956"],["Freddie Down","Phillies (Minors)","1956"],
+  ["Dick Guenther","Phillies (Minors)","1956"],["Carl Ratliff","Phillies (Minors)","1956"],
+  ["Dave Pinker","Phillies (Minors)","1956"],["Sam Montgomery","Phillies (Minors)","1956"],
+  ["Martin Luther","Phillies (Minors)","1956"],["Jim Milligan","Phillies (Minors)","1956"],
+  // 1956 Minor League - Indians
+  ["Aristoff","Indians (Minors)","1956"],["Hilferty","Indians (Minors)","1956"],["Lord","Indians (Minors)","1956"],
+  ["Gunther","Indians (Minors)","1956"],["Herschel","Indians (Minors)","1956"],["Colligan","Indians (Minors)","1956"],
+  // 1956 All-Stars (vs Aston-Middletown, Upper Darby)
+  ["Larry Aherns","All-Stars","1956"],
+];
+
+function renderIndex(rows){
+  rows.sort((a,b)=> a[0].localeCompare(b[0]));
+  const body = document.getElementById('pindex-body');
+  body.innerHTML = rows.map(r =>
+    `<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td></tr>`
+  ).join('');
+  document.getElementById('pcount').textContent = rows.length + " names on record";
+}
+function filterIndex(){
+  const q = document.getElementById('pfilter').value.toLowerCase().trim();
+  const filtered = q ? PLAYERS.filter(r => r[0].toLowerCase().includes(q)) : PLAYERS;
+  renderIndex(filtered);
+}
+renderIndex(PLAYERS.slice());
+</script>
+
 </body>
 </html>
